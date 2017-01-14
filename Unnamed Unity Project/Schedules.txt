@@ -1,0 +1,17 @@
+Add beast_02
+Add menu UI
+Add xp system
+Add mana system
+
+after-music
+Add Text fading jingles
+Add a cutscene
+
+Sprites-
+Platform
+Beast_02
+Save Sigil
+
+-Multiple damage instances
+-Cooldowns actually cooldowns
+-Platform slope edge detection
