@@ -12,10 +12,10 @@ public class CameraFollow : MonoBehaviour {
 
     public bool bounds;
 
-    private Vector2 velocity;
+    public Vector2 velocity;
     
 
-    void Start()
+    void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
     }

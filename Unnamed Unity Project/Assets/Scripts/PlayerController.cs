@@ -94,17 +94,9 @@ public class PlayerController : Character {
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(MyRigidBody.velocity.y);
         if (!IsDead)
         {
             HandleInput();
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                if (Orb != null)
-                {
-                    transform.position = FindObjectOfType<PlayerOrb>().transform.position;
-                }
-            }
         }
     }
 
@@ -169,6 +161,13 @@ public class PlayerController : Character {
             if (Input.GetMouseButtonDown(1))
             {
                 OrbAttack();
+            }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                if (Orb != null)
+                {
+                    transform.position = FindObjectOfType<PlayerOrb>().transform.position;
+                }
             }
         }
     }

@@ -1,4 +1,3 @@
-Add beast_02
 Add menu UI
 Add xp system
 Add mana system
@@ -8,10 +7,10 @@ Add Text fading jingles
 Add a cutscene
 
 Sprites-
-Platform
-Beast_02
-Save Sigil
+Beast_02/Consumed form
+Beast_01 Consumed form
+Better trees
 
 -Multiple damage instances
 -Cooldowns actually cooldowns
--Platform slope edge detection
+-Seperate melee and ranged states
