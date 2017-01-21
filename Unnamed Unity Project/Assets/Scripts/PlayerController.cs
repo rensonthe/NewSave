@@ -22,7 +22,7 @@ public class PlayerController : Character {
 
     private Enemy enemy;
     private float attackTimer;
-    private float attackCooldown = 2f;
+    private float attackCooldown = 3f;
     private bool canThrow = true;
 
     public bool immortalty;

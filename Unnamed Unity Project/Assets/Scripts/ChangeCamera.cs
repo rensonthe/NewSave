@@ -5,6 +5,8 @@ public class ChangeCamera : MonoBehaviour {
 
     public CameraFollow cameraFollow;
     public Vector3 minCameraPos;
+    public bool smoothChange;
+    public float posY;
 
     private bool activated = false;
 
@@ -12,10 +14,17 @@ public class ChangeCamera : MonoBehaviour {
     {
         if(activated == true)
         {
-            SmoothChange();
-            if(minCameraPos.y >= 2)
+            if (smoothChange == true)
             {
-                activated = false;
+                SmoothChange();
+                if (minCameraPos.y >= posY)
+                {
+                    activated = false;
+                }
+            }
+            else if (smoothChange == false)
+            {
+                cameraFollow.minCameraPos = minCameraPos;
             }
         }
     }
@@ -33,15 +42,18 @@ public class ChangeCamera : MonoBehaviour {
         if (other.tag == "Player")
         {
             activated = false;
-            minCameraPos.y -= cameraFollow.minCameraPos.y;
-            cameraFollow.minCameraPos = minCameraPos;
+            if(smoothChange == true)
+            {
+                minCameraPos.y -= cameraFollow.minCameraPos.y;
+                cameraFollow.minCameraPos = minCameraPos;
+            }
         }
     }
 
     void SmoothChange()
     {
         cameraFollow.minCameraPos = minCameraPos;
-        if (minCameraPos.y <= 2)
+        if (minCameraPos.y <= posY)
         {
             minCameraPos.y += Time.deltaTime;
         }
