@@ -4,6 +4,7 @@ using System.Collections;
 public class SpriteDialouge : MonoBehaviour {
 
     public SpriteRenderer sprite;
+    public bool activateLMB;
 
     private float Timer;
     private float Cooldown = 7;
@@ -19,6 +20,10 @@ public class SpriteDialouge : MonoBehaviour {
         {
             StartCoroutine("FadeCheck");
             Timer = 0;
+            if(PlayerController.Instance.LMB == false && activateLMB == true)
+            {
+                PlayerController.Instance.LMB = true;
+            }
         }
     }
 

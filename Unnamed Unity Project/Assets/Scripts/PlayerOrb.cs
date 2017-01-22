@@ -63,6 +63,7 @@ public class PlayerOrb : MonoBehaviour
         if(other.tag == "Wall")
         {
             Destroy(gameObject);
+            Destroy(Instantiate(orbEffect.gameObject, transform.position, Quaternion.identity) as GameObject, orbEffect.startLifetime);
         }
     }
 }

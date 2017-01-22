@@ -79,6 +79,8 @@ public class PlayerController : Character {
         }
     }
 
+    public bool LMB;
+
     public Vector2 startPos;
 
     // Use this for initialization
@@ -150,7 +152,7 @@ public class PlayerController : Character {
     {
         if (trig == false)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && LMB == true)
             {
                 MyAnimator.SetTrigger("attack");
             }

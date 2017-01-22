@@ -9,9 +9,8 @@ Add a cutscene
 Sprites-
 Beast_02/Consumed form
 Beast_01 Consumed form
-Better trees
 
 -Multiple damage instances
 -Cooldowns actually cooldowns
 -Seperate melee and ranged states
--SpriteLightKit
+-Camera Pan to view/return
