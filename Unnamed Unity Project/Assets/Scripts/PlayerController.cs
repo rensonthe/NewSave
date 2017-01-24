@@ -10,7 +10,11 @@ public class PlayerController : Character {
     [SerializeField]
     private Stat healthStat;
 
+    public Stat soulsStat;
+
     public float healVal;
+    public float orbLaunchVal;
+    public float orbJauntVal;
     public ParticleSystem healthEffect;
     public GameObject playerSoul;
     public Transform[] groundPoints;
@@ -80,6 +84,7 @@ public class PlayerController : Character {
     }
 
     public bool LMB;
+    public bool RMB;
 
     public Vector2 startPos;
 
@@ -91,6 +96,7 @@ public class PlayerController : Character {
         spriteRenderer = GetComponent<SpriteRenderer>();
         MyRigidBody = GetComponent<Rigidbody2D>();
         healthStat.Initialize();
+        soulsStat.Initialize();
     }
 
     // Update is called once per frame
@@ -160,7 +166,7 @@ public class PlayerController : Character {
             {
                 MyAnimator.SetTrigger("jump");
             }
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1) && RMB == true)
             {
                 OrbAttack();
             }
@@ -241,10 +247,11 @@ public class PlayerController : Character {
             attackTimer = 0;
         }
 
-        if (canThrow)
+        if (canThrow && soulsStat.CurrentVal > 0)
         {
             canThrow = false;
             MyAnimator.SetTrigger("throw");
+            soulsStat.CurrentVal -= orbLaunchVal;
         }
     }
 

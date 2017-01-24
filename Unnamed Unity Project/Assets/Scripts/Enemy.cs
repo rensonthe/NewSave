@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+public enum ENEMYTYPE { RANGED, MELEE, RANGEDMELEE}
+
 public class Enemy : Character {
 
-    public int damage;
+    [SerializeField]
+    private ENEMYTYPE myType;
 
     public Collider2D[] other;
 
@@ -47,6 +50,10 @@ public class Enemy : Character {
         }
     }
 
+    public float MeleeTimer { get; set; }
+
+    public float RangedTimer { get; set; }
+
     private Vector3 startPos;
 
     public Transform leftEdge;
@@ -67,6 +74,23 @@ public class Enemy : Character {
         PlayerController.Instance.Dead += new DeadEventHandler(RemoveTarget);
         ChangeState(new IdleState());
         Physics2D.IgnoreCollision(GetComponent<Collider2D>(), other[0], true);
+        SetState();
+    }
+
+    public void SetState()
+    {
+        switch (myType)
+        {
+            case ENEMYTYPE.RANGED:
+                ChangeState(new RangedState());
+                break;
+            case ENEMYTYPE.MELEE:
+                ChangeState(new MeleeState());
+                break;
+            case ENEMYTYPE.RANGEDMELEE:
+                ChangeState(new RangedMeleeState());
+                break;
+        }
     }
 	
 	// Update is called once per frame
@@ -81,6 +105,12 @@ public class Enemy : Character {
             LookAtTarget();
         }
 	}
+
+    void FixedUpdate()
+    {
+        MeleeTimer += Time.deltaTime;
+        RangedTimer += Time.deltaTime;
+    }
 
     IEnumerator SpawnChance()
     {
@@ -149,12 +179,20 @@ public class Enemy : Character {
     {
         base.OnTriggerEnter2D(other);
         currentState.OnTriggerEnter(other);
+        if(other.tag == "Orb")
+        {
+            health -= 10;
+            StartCoroutine(TakeDamage());
+        }
+        if(other.tag == "OrbJaunt")
+        {
+            health -= 15;
+            StartCoroutine(TakeDamage());
+        }
     }
 
     public override IEnumerator TakeDamage()
     {
-        health -= 10;
-
         if (!IsDead)
         {
             MyAnimator.SetTrigger("damage");

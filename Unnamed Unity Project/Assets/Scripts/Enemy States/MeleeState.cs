@@ -6,9 +6,8 @@ public class MeleeState : IEnemyState
 {
     private Enemy enemy;
 
-    private float attackTimer;
     private float attackCooldown = 3;
-    private bool canThrow = true;
+    private static bool canAttack = true;
 
     public void Enter(Enemy enemy)
     {
@@ -19,9 +18,9 @@ public class MeleeState : IEnemyState
     {
         Attack();
 
-        if (enemy.InThrowRange && !enemy.InMeleeRange)
+        if (!enemy.InMeleeRange)
         {
-            enemy.ChangeState(new RangedState());
+            enemy.Move();
         }
         else if (enemy.Target == null)
         {
@@ -41,18 +40,17 @@ public class MeleeState : IEnemyState
 
     private void Attack()
     {
-        attackTimer += Time.deltaTime;
-
-        if (attackTimer >= attackCooldown)
+        if (enemy.MeleeTimer >= attackCooldown)
         {
-            canThrow = true;
-            attackTimer = 0;
+            canAttack = true;
+            enemy.MeleeTimer = 0;
         }
 
-        if (canThrow)
+        if (canAttack && enemy.InMeleeRange)
         {
-            canThrow = false;
+            canAttack = false;
             enemy.MyAnimator.SetTrigger("attack");
+            enemy.MeleeTimer = 0;
         }
     }
 }

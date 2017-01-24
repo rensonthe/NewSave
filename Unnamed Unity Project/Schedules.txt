@@ -1,6 +1,5 @@
 Add menu UI
 Add xp system
-Add mana system
 
 after-music
 Add Text fading jingles

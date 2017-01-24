@@ -6,9 +6,8 @@ public class RangedState : IEnemyState {
 
     private Enemy enemy;
 
-    private float throwTimer;
     private float throwCooldown = 5;
-    private bool canThrow = true;
+    private static bool canThrow = true;
 
     public void Enter(Enemy enemy)
     {
@@ -19,13 +18,12 @@ public class RangedState : IEnemyState {
     {
         Throw();
 
-        if (enemy.InMeleeRange)
+        if(enemy.Target != null)
         {
-            enemy.ChangeState(new MeleeState());
-        }
-        else if(enemy.Target != null)
-        {
-            enemy.Move();
+            if (!enemy.InThrowRange)
+            {
+                enemy.Move();
+            }
         }
         else
         {
@@ -45,15 +43,13 @@ public class RangedState : IEnemyState {
 
     private void Throw()
     {
-        throwTimer += Time.deltaTime;
-
-        if(throwTimer >= throwCooldown)
+        if(enemy.RangedTimer >= throwCooldown)
         {
             canThrow = true;
-            throwTimer = 0;
+            enemy.RangedTimer = 0;
         }
 
-        if (canThrow)
+        if (canThrow && enemy.InThrowRange)
         {
             canThrow = false;
             enemy.MyAnimator.SetTrigger("throw");

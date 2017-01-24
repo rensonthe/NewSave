@@ -16,14 +16,14 @@ public class PatrolState : IEnemyState
     }
 
     public void Execute()
-    {        
+    {
         Patrol();
 
         enemy.Move();
 
-        if(enemy.Target != null && enemy.InThrowRange)
+        if (enemy.Target != null && enemy.InThrowRange)
         {
-            enemy.ChangeState(new RangedState());
+            enemy.SetState();
         }
     }
 
