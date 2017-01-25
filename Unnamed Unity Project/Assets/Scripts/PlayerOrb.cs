@@ -48,7 +48,7 @@ public class PlayerOrb : MonoBehaviour
         {
             damageCollider.enabled = true;
             PlayerController.Instance.soulsStat.CurrentVal -= PlayerController.Instance.orbJauntVal;
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.1f);
             Destroy(Instantiate(orbEffect.gameObject, transform.position, Quaternion.identity) as GameObject, orbEffect.startLifetime);
             Destroy(gameObject);
         }

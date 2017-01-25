@@ -18,7 +18,7 @@ public class MeleeState : IEnemyState
     {
         Attack();
 
-        if (!enemy.InMeleeRange)
+        if (!enemy.InMeleeRange && enemy.InThrowRange)
         {
             enemy.Move();
         }

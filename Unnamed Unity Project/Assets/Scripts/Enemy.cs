@@ -73,7 +73,10 @@ public class Enemy : Character {
         base.Start();
         PlayerController.Instance.Dead += new DeadEventHandler(RemoveTarget);
         ChangeState(new IdleState());
-        Physics2D.IgnoreCollision(GetComponent<Collider2D>(), other[0], true);
+        for (int i = 0; i < other.Length; i++)
+        {
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), other[i], true);
+        }
         SetState();
     }
 
@@ -179,14 +182,19 @@ public class Enemy : Character {
     {
         base.OnTriggerEnter2D(other);
         currentState.OnTriggerEnter(other);
-        if(other.tag == "Orb")
+        if (other.tag == "Sword")
+        {
+            health -= 10;
+            StartCoroutine(TakeDamage());
+        }
+        if (other.tag == "Orb")
         {
             health -= 10;
             StartCoroutine(TakeDamage());
         }
         if(other.tag == "OrbJaunt")
         {
-            health -= 15;
+            health -= 20;
             StartCoroutine(TakeDamage());
         }
     }

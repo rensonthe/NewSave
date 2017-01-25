@@ -1,15 +1,10 @@
-Add menu UI
-Add xp system
-
 after-music
 Add Text fading jingles
 Add a cutscene
 
 Sprites-
 Beast_02/Consumed form
-Beast_01 Consumed form
+Lootbox Death
 
--Multiple damage instances
--Cooldowns actually cooldowns
--Seperate melee and ranged states
--Camera Pan to view/return
+-XP System
+-Upgrading menu UI

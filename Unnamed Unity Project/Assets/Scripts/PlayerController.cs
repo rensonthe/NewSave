@@ -26,7 +26,7 @@ public class PlayerController : Character {
 
     private Enemy enemy;
     private float attackTimer;
-    private float attackCooldown = 3f;
+    private float attackCooldown = 4f;
     private bool canThrow = true;
 
     public bool immortalty;
@@ -304,8 +304,6 @@ public class PlayerController : Character {
         }
         else
         {
-            healthStat.CurrentVal -= 10;
-
             if (!IsDead)
             {
                 MyAnimator.SetTrigger("damage");
@@ -315,6 +313,15 @@ public class PlayerController : Character {
                 MyAnimator.SetLayerWeight(1, 0);
                 MyAnimator.SetTrigger("death");
             }
+        }
+    }
+
+    public override void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.tag == "EnemySword1")
+        {
+            healthStat.CurrentVal -= 5;
+            StartCoroutine(TakeDamage());
         }
     }
 
