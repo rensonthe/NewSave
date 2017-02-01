@@ -4,7 +4,8 @@ Add a cutscene
 
 Sprites-
 Beast_02/Consumed form
-Lootbox Death
 
 -XP System
 -Upgrading menu UI
+-Passive/Agressive
+-Consistent Color Pallet

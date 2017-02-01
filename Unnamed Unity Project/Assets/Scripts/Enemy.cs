@@ -210,7 +210,8 @@ public class Enemy : Character {
             MyAnimator.SetTrigger("death");
             StartCoroutine("SpawnChance");
             yield return new WaitForSeconds(1f);
-            Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity) as GameObject, deathEffect.startLifetime);            
+            Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity) as GameObject, deathEffect.startLifetime);
+            PlayerController.Instance.GainXP(10);           
             yield return null;
         }
     }

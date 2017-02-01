@@ -10,11 +10,18 @@ public class PlayerController : Character {
     [SerializeField]
     private Stat healthStat;
 
+    public Stat XPStat;
     public Stat soulsStat;
+
+    private int currentXP;
+    private int nextLevelXP = 20;
+    private int level;
+    private int skillPoint;
 
     public float healVal;
     public float orbLaunchVal;
     public float orbJauntVal;
+    public ParticleSystem levelUpEffect;
     public ParticleSystem healthEffect;
     public GameObject playerSoul;
     public Transform[] groundPoints;
@@ -97,6 +104,8 @@ public class PlayerController : Character {
         MyRigidBody = GetComponent<Rigidbody2D>();
         healthStat.Initialize();
         soulsStat.Initialize();
+        XPStat.Initialize();
+        XPStat.CurrentVal = currentXP;
     }
 
     // Update is called once per frame
@@ -176,6 +185,10 @@ public class PlayerController : Character {
                 {
                     transform.position = FindObjectOfType<PlayerOrb>().transform.position;
                 }
+            }
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                GainXP(10);
             }
         }
     }
@@ -323,6 +336,11 @@ public class PlayerController : Character {
             healthStat.CurrentVal -= 5;
             StartCoroutine(TakeDamage());
         }
+        if (other.tag == "EnemyOrb2")
+        {
+            healthStat.CurrentVal -= 10;
+            StartCoroutine(TakeDamage());
+        }
     }
 
     public override void Death()
@@ -358,6 +376,11 @@ public class PlayerController : Character {
         yield return null;
     }
 
+    private void LevelUp()
+    {
+        Destroy(Instantiate(levelUpEffect.gameObject, transform.position, Quaternion.identity) as GameObject, levelUpEffect.startLifetime);
+    }
+
     private IEnumerator Checkpoint()
     {
         yield return new WaitForSeconds(5);
@@ -371,12 +394,29 @@ public class PlayerController : Character {
     {
         if(other.gameObject.tag == "Health")
         {
-            if(healthStat.CurrentVal != healthStat.MaxVal)
+            if(healthStat.CurrentVal <= healthStat.MaxVal)
             {
                 healthStat.CurrentVal += healVal;
                 Destroy(Instantiate(healthEffect.gameObject, transform.position, Quaternion.identity) as GameObject, healthEffect.startLifetime);
                 Destroy(other.gameObject);
             }
+        }
+    }
+
+    public void GainXP(int XP)
+    {
+        currentXP += XP;
+        XPStat.CurrentVal = currentXP;
+
+        if (currentXP >= nextLevelXP)
+        {
+            level++;
+            skillPoint++;
+            currentXP = currentXP - nextLevelXP;
+            nextLevelXP += 10;
+            LevelUp();
+            XPStat.MaxVal = nextLevelXP;
+            XPStat.CurrentVal = currentXP;
         }
     }
 }
