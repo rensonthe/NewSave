@@ -5,9 +5,25 @@ using System.Collections;
 
 public class UIManager : MonoBehaviour {
 
+    private static UIManager instance;
+
+    public static UIManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = GameObject.FindObjectOfType<UIManager>();
+            }
+            return instance;
+        }
+    }
+
     public Flowchart flowchart;
     public InputField mainInputField;
     public GameObject EnterNameGUI;
+    public GameObject UpgradeUI;
+    public Text currentSkillPoints;
     public Text enterName;
     static string playerName;
 
@@ -18,8 +34,16 @@ public class UIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            ShowUpgradeUI();
+        }
+    }
 
-	}
+    public void ShowUpgradeUI()
+    {
+        UpgradeUI.SetActive(!UpgradeUI.activeSelf);
+    }
 
     public void ShowGUI()
     {

@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public delegate void DeadEventHandler();
 
@@ -17,6 +18,7 @@ public class PlayerController : Character {
     private int nextLevelXP = 20;
     private int level;
     private int skillPoint;
+    private Dictionary<string,SkillPoints> skills = new Dictionary<string, SkillPoints>();
 
     public float healVal;
     public float orbLaunchVal;
@@ -106,6 +108,7 @@ public class PlayerController : Character {
         soulsStat.Initialize();
         XPStat.Initialize();
         XPStat.CurrentVal = currentXP;
+        skills.Add("OrbBlast",new SkillPoints(1));
     }
 
     // Update is called once per frame
@@ -403,6 +406,23 @@ public class PlayerController : Character {
         }
     }
 
+    public void SpendSkillPoints(string skillName)
+    {
+        int skillPointsRequired = skills[skillName].required;
+        if(skillPoint >= skillPointsRequired && !skills[skillName].unlocked)
+        {
+            skillPoint -= skillPointsRequired;
+            UIManager.Instance.currentSkillPoints.text = skillPoint.ToString();
+            switch (skillName)
+            {
+                case "OrbBlast":
+                    RMB = true;
+                    skills[skillName].unlocked = true;
+                    break;
+            }
+        }
+    }
+
     public void GainXP(int XP)
     {
         currentXP += XP;
@@ -412,6 +432,7 @@ public class PlayerController : Character {
         {
             level++;
             skillPoint++;
+            UIManager.Instance.currentSkillPoints.text = skillPoint.ToString();
             currentXP = currentXP - nextLevelXP;
             nextLevelXP += 10;
             LevelUp();

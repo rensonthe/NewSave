@@ -5,7 +5,14 @@ Add a cutscene
 Sprites-
 Beast_02/Consumed form
 
--XP System
+-Fix Moving Platform Bounce
+-Screen Menu Pause
+-Custom mouse icon
 -Upgrading menu UI
+(
+-When activated change sprites
+-Close/Open with tab
+-Scrolling
+-Indicator for skillpoints
+)
 -Passive/Agressive
--Consistent Color Pallet
