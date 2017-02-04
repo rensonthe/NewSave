@@ -7,6 +7,7 @@ public class CameraPanTrigger : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        UIManager.Instance.isAllowed = false;
         cameraFollow.CameraPanTrigger();
         Destroy(gameObject);
     }

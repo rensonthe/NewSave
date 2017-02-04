@@ -12,7 +12,7 @@ public class Enemy : Character {
 
     public Collider2D[] other;
 
-    public GameObject redSoul;
+    public GameObject XPOrb;
 
     public ParticleSystem deathEffect;
 
@@ -120,7 +120,7 @@ public class Enemy : Character {
         yield return new WaitForSeconds(1f);
         if (UnityEngine.Random.value > 0.5f)
         {
-            Instantiate(redSoul, transform.position, Quaternion.identity);
+            Instantiate(XPOrb, transform.position, Quaternion.identity);
         }
         StopCoroutine("SpawnChance");
     }
@@ -207,11 +207,12 @@ public class Enemy : Character {
         }
         else
         {
+            Destroy(gameObject.GetComponent<Collider2D>());
+            gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
             MyAnimator.SetTrigger("death");
-            StartCoroutine("SpawnChance");
+            Instantiate(XPOrb, transform.position, Quaternion.identity);
             yield return new WaitForSeconds(1f);
-            Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity) as GameObject, deathEffect.startLifetime);
-            PlayerController.Instance.GainXP(10);           
+            Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity) as GameObject, deathEffect.startLifetime);    
             yield return null;
         }
     }

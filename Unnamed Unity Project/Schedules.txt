@@ -10,9 +10,10 @@ Beast_02/Consumed form
 -Custom mouse icon
 -Upgrading menu UI
 (
--When activated change sprites
--Close/Open with tab
+-Get color fill animation done
+-Unable to upgrade any ability regardless of skill path
 -Scrolling
--Indicator for skillpoints
+-Finish basic skill tree (2,4,2)
+-Enhanced ability viewing mechanic
 )
 -Passive/Agressive

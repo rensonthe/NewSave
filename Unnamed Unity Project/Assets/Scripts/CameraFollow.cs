@@ -118,6 +118,7 @@ public class CameraFollow : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.E))
             {
                 _keyPressed = true;
+                UIManager.Instance.isAllowed = true;
                 break;
             }
             if (!fading)

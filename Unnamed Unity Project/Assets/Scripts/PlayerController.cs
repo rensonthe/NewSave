@@ -15,7 +15,7 @@ public class PlayerController : Character {
     public Stat soulsStat;
 
     private int currentXP;
-    private int nextLevelXP = 20;
+    private int nextLevelXP = 100;
     private int level;
     private int skillPoint;
     private Dictionary<string,SkillPoints> skills = new Dictionary<string, SkillPoints>();
@@ -25,6 +25,7 @@ public class PlayerController : Character {
     public float orbJauntVal;
     public ParticleSystem levelUpEffect;
     public ParticleSystem healthEffect;
+    public ParticleSystem xpEffect;
     public GameObject playerSoul;
     public Transform[] groundPoints;
     public LayerMask whatIsGround;
@@ -94,6 +95,7 @@ public class PlayerController : Character {
 
     public bool LMB;
     public bool RMB;
+    public bool OrbJaunt;
 
     public Vector2 startPos;
 
@@ -109,6 +111,7 @@ public class PlayerController : Character {
         XPStat.Initialize();
         XPStat.CurrentVal = currentXP;
         skills.Add("OrbBlast",new SkillPoints(1));
+        skills.Add("OrbJaunt", new SkillPoints(1));
     }
 
     // Update is called once per frame
@@ -182,7 +185,7 @@ public class PlayerController : Character {
             {
                 OrbAttack();
             }
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.Q) && OrbJaunt == true)
             {
                 if (Orb != null)
                 {
@@ -379,11 +382,6 @@ public class PlayerController : Character {
         yield return null;
     }
 
-    private void LevelUp()
-    {
-        Destroy(Instantiate(levelUpEffect.gameObject, transform.position, Quaternion.identity) as GameObject, levelUpEffect.startLifetime);
-    }
-
     private IEnumerator Checkpoint()
     {
         yield return new WaitForSeconds(5);
@@ -404,6 +402,12 @@ public class PlayerController : Character {
                 Destroy(other.gameObject);
             }
         }
+        if(other.gameObject.tag == "XPOrb")
+        {
+            GainXP(UnityEngine.Random.Range(7,9));
+            Destroy(Instantiate(xpEffect.gameObject, other.transform.position, Quaternion.identity) as GameObject, healthEffect.startLifetime);
+            Destroy(other.gameObject);
+        }
     }
 
     public void SpendSkillPoints(string skillName)
@@ -417,6 +421,10 @@ public class PlayerController : Character {
             {
                 case "OrbBlast":
                     RMB = true;
+                    skills[skillName].unlocked = true;
+                    break;
+                case "OrbJaunt":
+                    OrbJaunt = true;
                     skills[skillName].unlocked = true;
                     break;
             }
@@ -435,7 +443,7 @@ public class PlayerController : Character {
             UIManager.Instance.currentSkillPoints.text = skillPoint.ToString();
             currentXP = currentXP - nextLevelXP;
             nextLevelXP += 10;
-            LevelUp();
+            Destroy(Instantiate(levelUpEffect.gameObject, transform.position, Quaternion.identity) as GameObject, levelUpEffect.startLifetime);
             XPStat.MaxVal = nextLevelXP;
             XPStat.CurrentVal = currentXP;
         }

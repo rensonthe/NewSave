@@ -36,7 +36,7 @@ public class PlayerOrb : MonoBehaviour
 
     private void OrbMechanic()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && PlayerController.Instance.OrbJaunt == true)
         {
             StartCoroutine(OrbWait());
         }

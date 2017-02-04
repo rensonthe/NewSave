@@ -1,31 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 
 namespace Prime31
 {
-	public enum SLKColorchannels
-	{
-		None,
-		All,
-		Red,
-		Green,
-		Blue
-	}
-
-
-	public enum SLKWaveFunctions
-	{
-		Sin,
-		Triangle,
-		Square,
-		SawTooth,
-		IntertedSawTooth,
-		Random,
-		PerlinNoise
-	}
-
-
 	public class SpriteLightColorCycler : MonoBehaviour
 	{
 		public SLKColorchannels colorChannel = SLKColorchannels.All;
@@ -45,15 +24,15 @@ namespace Prime31
 		public bool affectsIntensity = true;
 
 		// cache original values
-		SpriteRenderer _spriteRenderer;
+		Image _image;
 		Color originalColor;
 		float originalIntensity;
 
 
 		void Awake()
 		{
-			_spriteRenderer = GetComponent<SpriteRenderer>();
-			originalColor = _spriteRenderer.color;
+			_image = GetComponent<Image>();
+			originalColor = _image.color;
 			originalIntensity = originalColor.a;
 		}
 
@@ -61,7 +40,7 @@ namespace Prime31
 
 		void Update()
 		{
-			var color = _spriteRenderer.color;
+			var color = _image.color;
 
 			switch( colorChannel )
 			{
@@ -84,7 +63,7 @@ namespace Prime31
 			else
 				color.a = originalColor.a;
 
-			_spriteRenderer.color = color;
+			_image.color = color;
 		}
 
 
