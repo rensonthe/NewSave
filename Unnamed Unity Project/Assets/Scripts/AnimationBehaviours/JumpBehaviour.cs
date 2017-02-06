@@ -3,10 +3,27 @@ using System.Collections;
 
 public class JumpBehaviour : StateMachineBehaviour {
 
+    private Vector2 jumpSize = new Vector2(0.5f, 0.2f);
+    private Vector2 jumpeOffSet = new Vector2(-0.04f, -0.8f);
+
+    private Vector2 size;
+    private Vector2 offset;
+
+    private BoxCollider2D boxCollider;
+
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        PlayerController.Instance.Jump = true;
 
-        PlayerController.Instance.Jump = true;	
+        if (boxCollider == null)
+        {
+            boxCollider = PlayerController.Instance.GetComponent<BoxCollider2D>();
+            size = boxCollider.size;
+            offset = boxCollider.offset;
+        }
+
+        boxCollider.size = jumpSize;
+        boxCollider.offset = jumpeOffSet;
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -16,8 +33,10 @@ public class JumpBehaviour : StateMachineBehaviour {
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        PlayerController.Instance.Jump = false;
 
-        PlayerController.Instance.Jump = false;	
+        boxCollider.size = size;
+        boxCollider.offset = offset;
 	}
 
 	// OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

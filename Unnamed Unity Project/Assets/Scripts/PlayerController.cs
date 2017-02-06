@@ -20,6 +20,8 @@ public class PlayerController : Character {
     private int skillPoint;
     private Dictionary<string,SkillPoints> skills = new Dictionary<string, SkillPoints>();
 
+    private Animator skillAnimator;
+
     public float healVal;
     public float orbLaunchVal;
     public float orbJauntVal;
@@ -90,6 +92,14 @@ public class PlayerController : Character {
         get
         {
             return MyRigidBody.velocity.y < 0;
+        }
+    }
+
+    public bool IsJumping
+    {
+        get
+        {
+            return MyRigidBody.velocity.y > 0;
         }
     }
 
@@ -417,6 +427,7 @@ public class PlayerController : Character {
         {
             skillPoint -= skillPointsRequired;
             UIManager.Instance.currentSkillPoints.text = skillPoint.ToString();
+            skillAnimator.SetTrigger("skill_fill");
             switch (skillName)
             {
                 case "OrbBlast":
@@ -447,5 +458,10 @@ public class PlayerController : Character {
             XPStat.MaxVal = nextLevelXP;
             XPStat.CurrentVal = currentXP;
         }
+    }
+
+    public void SetSkillAnimation(Animator skillAnimator)
+    {
+        this.skillAnimator = skillAnimator;
     }
 }

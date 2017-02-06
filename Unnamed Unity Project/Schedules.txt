@@ -6,14 +6,16 @@ Sprites-
 Beast_02/Consumed form
 
 -Fix Moving Platform Bounce
--Screen Menu Pause
--Custom mouse icon
 -Upgrading menu UI
 (
 -Get color fill animation done
 -Unable to upgrade any ability regardless of skill path
 -Scrolling
--Finish basic skill tree (2,4,2)
 -Enhanced ability viewing mechanic
 )
 -Passive/Agressive
+
+-Self-Work
+-Screen Menu Pause
+-Add SoulBox "Enemy"
+-Finish basic skill tree (2,4,2)
