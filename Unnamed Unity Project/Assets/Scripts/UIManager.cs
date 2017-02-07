@@ -7,6 +7,8 @@ public class UIManager : MonoBehaviour {
 
     public Image fadeImage;
     public bool isAllowed = true;
+    public bool trig = false;
+    public bool isUpgrading = false;
 
     private bool isInTransition;
     private float transition;
@@ -42,12 +44,16 @@ public class UIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.Tab) && isAllowed)
+        if(trig == false)
         {
-            ShowUpgradeUI();
-            fadeImage.enabled = true;
-            PlayerController.Instance.SetInactive();
+            if (Input.GetKeyDown(KeyCode.Tab) && isAllowed)
+            {
+                ShowUpgradeUI();
+                fadeImage.enabled = true;
+                PlayerController.Instance.SetInactive();
+            }
         }
+
         if (!isInTransition)
             return;
 
@@ -88,9 +94,6 @@ public class UIManager : MonoBehaviour {
             PlayerController.Instance.SetActive();
         }
     }
-
-    public void TABUpgrades() { 
-}
 
     public void ShowGUI()
     {

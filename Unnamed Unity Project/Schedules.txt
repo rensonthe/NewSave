@@ -5,15 +5,14 @@ Add a cutscene
 Sprites-
 Beast_02/Consumed form
 
--Fix Moving Platform Bounce
 -Upgrading menu UI
 (
--Get color fill animation done
 -Unable to upgrade any ability regardless of skill path
 -Scrolling
 -Enhanced ability viewing mechanic
 )
 -Passive/Agressive
+-Multiple Drops
 
 -Self-Work
 -Screen Menu Pause

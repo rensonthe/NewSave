@@ -209,10 +209,10 @@ public class Enemy : Character {
         {
             Destroy(gameObject.GetComponent<Collider2D>());
             gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
-            MyAnimator.SetTrigger("death");
-            Instantiate(XPOrb, transform.position, Quaternion.identity);
+            MyAnimator.SetTrigger("death");            
             yield return new WaitForSeconds(1f);
-            Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity) as GameObject, deathEffect.startLifetime);    
+            Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity) as GameObject, deathEffect.startLifetime);
+            Instantiate(XPOrb, transform.position, Quaternion.identity);
             yield return null;
         }
     }

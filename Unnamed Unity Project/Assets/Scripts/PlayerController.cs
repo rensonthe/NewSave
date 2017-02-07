@@ -22,12 +22,14 @@ public class PlayerController : Character {
 
     private Animator skillAnimator;
 
+    public float energyVal;
     public float healVal;
     public float orbLaunchVal;
     public float orbJauntVal;
     public ParticleSystem levelUpEffect;
     public ParticleSystem healthEffect;
     public ParticleSystem xpEffect;
+    public ParticleSystem energyEffect;
     public GameObject playerSoul;
     public Transform[] groundPoints;
     public LayerMask whatIsGround;
@@ -405,16 +407,25 @@ public class PlayerController : Character {
     {
         if(other.gameObject.tag == "Health")
         {
-            if(healthStat.CurrentVal <= healthStat.MaxVal)
+            if(healthStat.CurrentVal < healthStat.MaxVal)
             {
                 healthStat.CurrentVal += healVal;
                 Destroy(Instantiate(healthEffect.gameObject, transform.position, Quaternion.identity) as GameObject, healthEffect.startLifetime);
                 Destroy(other.gameObject);
             }
         }
-        if(other.gameObject.tag == "XPOrb")
+        if (other.gameObject.tag == "Energy")
         {
-            GainXP(UnityEngine.Random.Range(7,9));
+            if (soulsStat.CurrentVal < soulsStat.MaxVal)
+            {
+                soulsStat.CurrentVal += energyVal;
+                Destroy(Instantiate(energyEffect.gameObject, transform.position, Quaternion.identity) as GameObject, healthEffect.startLifetime);
+                Destroy(other.gameObject);
+            }
+        }
+        if (other.gameObject.tag == "XPOrb")
+        {
+            GainXP(UnityEngine.Random.Range(11,15));
             Destroy(Instantiate(xpEffect.gameObject, other.transform.position, Quaternion.identity) as GameObject, healthEffect.startLifetime);
             Destroy(other.gameObject);
         }
@@ -422,22 +433,25 @@ public class PlayerController : Character {
 
     public void SpendSkillPoints(string skillName)
     {
-        int skillPointsRequired = skills[skillName].required;
-        if(skillPoint >= skillPointsRequired && !skills[skillName].unlocked)
+        if(UIManager.Instance.isUpgrading == false)
         {
-            skillPoint -= skillPointsRequired;
-            UIManager.Instance.currentSkillPoints.text = skillPoint.ToString();
-            skillAnimator.SetTrigger("skill_fill");
-            switch (skillName)
+            int skillPointsRequired = skills[skillName].required;
+            if (skillPoint >= skillPointsRequired && !skills[skillName].unlocked)
             {
-                case "OrbBlast":
-                    RMB = true;
-                    skills[skillName].unlocked = true;
-                    break;
-                case "OrbJaunt":
-                    OrbJaunt = true;
-                    skills[skillName].unlocked = true;
-                    break;
+                skillPoint -= skillPointsRequired;
+                UIManager.Instance.currentSkillPoints.text = skillPoint.ToString();
+                skillAnimator.SetTrigger("skill_fill");
+                switch (skillName)
+                {
+                    case "OrbBlast":
+                        RMB = true;
+                        skills[skillName].unlocked = true;
+                        break;
+                    case "OrbJaunt":
+                        OrbJaunt = true;
+                        skills[skillName].unlocked = true;
+                        break;
+                }
             }
         }
     }
