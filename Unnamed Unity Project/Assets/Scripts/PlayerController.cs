@@ -7,7 +7,6 @@ using System.Collections.Generic;
 public delegate void DeadEventHandler();
 
 public class PlayerController : Character {
-
     [SerializeField]
     private Stat healthStat;
 
@@ -124,8 +123,8 @@ public class PlayerController : Character {
         XPStat.Initialize();
         XPStat.CurrentVal = currentXP;
         skills.Add("OrbBlast",new SkillPoints(1));
-        skills.Add("OrbJaunt", new SkillPoints(1));
-        skills.Add("Bulwark", new SkillPoints(1));
+        skills.Add("OrbJaunt", new SkillPoints(1, "OrbBlast"));
+        skills.Add("Bulwark", new SkillPoints(1, "OrbBlast"));
     }
 
     // Update is called once per frame
@@ -438,7 +437,13 @@ public class PlayerController : Character {
         if(UIManager.Instance.isUpgrading == false)
         {
             int skillPointsRequired = skills[skillName].required;
-            if (skillPoint >= skillPointsRequired && !skills[skillName].unlocked)
+            string parent = skills[skillName].parent;
+            bool parentUnlocked = true;
+            if (parent != string.Empty)
+            {
+                parentUnlocked = skills[parent].unlocked;
+            }
+            if (skillPoint >= skillPointsRequired && !skills[skillName].unlocked && parentUnlocked)
             {
                 skillPoint -= skillPointsRequired;
                 UIManager.Instance.currentSkillPoints.text = skillPoint.ToString();

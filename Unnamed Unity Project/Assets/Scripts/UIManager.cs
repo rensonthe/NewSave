@@ -51,7 +51,6 @@ public class UIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(isUpgrading);
         if(trig == false)
         {
             if (Input.GetKeyDown(KeyCode.Tab) && isAllowed)

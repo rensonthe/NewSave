@@ -7,8 +7,6 @@ Beast_02/Consumed form
 
 -Upgrading menu UI
 (
--Unable to upgrade any ability regardless of skill path
--Scrolling
 -Enhanced ability viewing mechanic
 )
 -Passive/Agressive
@@ -17,3 +15,10 @@ Beast_02/Consumed form
 -Self-Work
 -Screen Menu Pause
 -Finish basic skill tree (2,4,2)
+
+Music-
+1st BGM:
+Place = Dark Forest
+Instruments = 2
+Song Length = 30 seconds
+Composing Method: Chords-first
