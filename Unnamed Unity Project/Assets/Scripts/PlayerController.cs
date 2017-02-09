@@ -108,6 +108,7 @@ public class PlayerController : Character {
     public bool LMB;
     public bool RMB;
     public bool OrbJaunt;
+    public bool Bulwark;
 
     public Vector2 startPos;
 
@@ -124,6 +125,7 @@ public class PlayerController : Character {
         XPStat.CurrentVal = currentXP;
         skills.Add("OrbBlast",new SkillPoints(1));
         skills.Add("OrbJaunt", new SkillPoints(1));
+        skills.Add("Bulwark", new SkillPoints(1));
     }
 
     // Update is called once per frame
@@ -449,6 +451,10 @@ public class PlayerController : Character {
                         break;
                     case "OrbJaunt":
                         OrbJaunt = true;
+                        skills[skillName].unlocked = true;
+                        break;
+                    case "Bulwark":
+                        Bulwark = true;
                         skills[skillName].unlocked = true;
                         break;
                 }

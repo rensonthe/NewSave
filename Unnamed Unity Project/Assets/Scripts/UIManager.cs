@@ -37,13 +37,21 @@ public class UIManager : MonoBehaviour {
     public Text enterName;
     static string playerName;
 
-	// Use this for initialization
-	void Start () {
+    public GameObject glowIn1;
+    public GameObject glowOut1;
+    public GameObject glowIn2;
+    public GameObject glowOut2;
+    public GameObject glowIn3;
+    public GameObject glowOut3;
+
+    // Use this for initialization
+    void Start () {
 
     }
 	
 	// Update is called once per frame
 	void Update () {
+        Debug.Log(isUpgrading);
         if(trig == false)
         {
             if (Input.GetKeyDown(KeyCode.Tab) && isAllowed)

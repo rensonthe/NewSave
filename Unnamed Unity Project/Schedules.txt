@@ -16,5 +16,4 @@ Beast_02/Consumed form
 
 -Self-Work
 -Screen Menu Pause
--Add SoulBox "Enemy"
 -Finish basic skill tree (2,4,2)

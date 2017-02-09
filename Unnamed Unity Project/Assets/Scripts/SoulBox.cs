@@ -35,9 +35,9 @@ public class SoulBox : Character
             MyAnimator.SetTrigger("death");
             yield return new WaitForSeconds(1f);
             Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity) as GameObject, deathEffect.startLifetime);
-            Instantiate(XPOrb, transform.position, Quaternion.identity);
-            Instantiate(healthOrb, transform.position, Quaternion.identity);
-            Instantiate(energyOrb, transform.position, Quaternion.identity);
+            Instantiate(XPOrb, UnityEngine.Random.insideUnitSphere * 1 + transform.position, Quaternion.identity);
+            Instantiate(healthOrb, UnityEngine.Random.insideUnitSphere * 1 + transform.position, Quaternion.identity);
+            Instantiate(energyOrb,UnityEngine.Random.insideUnitSphere * 1 + transform.position, Quaternion.identity);
             yield return null;
         }
     }
@@ -49,6 +49,7 @@ public class SoulBox : Character
         {
             health -= 10;
             StartCoroutine(TakeDamage());
+            transform.position = UnityEngine.Random.insideUnitSphere * 0.1f + transform.position;       
         }
     }
 }
