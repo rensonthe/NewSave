@@ -14,7 +14,14 @@ Beast_02/Consumed form
 
 -Self-Work
 -Screen Menu Pause
--Finish basic skill tree (2,4,2)
+-Finish basic skill tree 
+(
+Jump = Animation/Func
+Jump Attack = Animation/Func
+Double Jump = Animation/Func
+Bulwark = Animation/Func
+Corruption = Animation/Func
+)
 
 Music-
 1st BGM:

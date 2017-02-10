@@ -108,6 +108,13 @@ public class PlayerController : Character {
     public bool RMB;
     public bool OrbJaunt;
     public bool Bulwark;
+    public bool bulwarkIsActive = false;
+    public float bulwarkDuration;
+    private float bulwarkTimer;
+    public float bulwarkCooldown;
+    public Transform bulwarkPrefab;
+    public GameObject bulwarkIndicator;
+    public bool berserkIsActive = false;
 
     public Vector2 startPos;
 
@@ -138,7 +145,7 @@ public class PlayerController : Character {
 
     void FixedUpdate() {
 
-        if (!IsDead)
+        if (!IsDead && !TakingDamage || TakingDamage && bulwarkIsActive)
         {
             float horizontal = Input.GetAxis("Horizontal");
 
@@ -151,6 +158,11 @@ public class PlayerController : Character {
             HandleLayers();
 
             attackTimer += Time.deltaTime;
+
+            if (!bulwarkIsActive)
+            {
+                bulwarkTimer += Time.deltaTime;
+            }
         }
 
     }
@@ -198,16 +210,21 @@ public class PlayerController : Character {
             {
                 OrbAttack();
             }
-            if (Input.GetKeyDown(KeyCode.Q) && OrbJaunt == true)
+            if (Input.GetKeyDown(KeyCode.Q) && OrbJaunt == true && Orb != null)
             {
-                if (Orb != null)
+                transform.position = FindObjectOfType<PlayerOrb>().transform.position;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (bulwarkTimer >= bulwarkCooldown && Bulwark == true)
                 {
-                    transform.position = FindObjectOfType<PlayerOrb>().transform.position;
+                    StartCoroutine("ActivateBulwark");
+                    bulwarkTimer = 0;
                 }
             }
             if (Input.GetKeyDown(KeyCode.L))
             {
-                GainXP(10);
+                GainXP(nextLevelXP);
             }
         }
     }
@@ -313,20 +330,25 @@ public class PlayerController : Character {
         }
     }
 
+    public IEnumerator ActivateBulwark()
+    {
+        bulwarkIsActive = true;
+        bulwarkPrefab.gameObject.SetActive(true);
+        bulwarkIndicator.gameObject.SetActive(true);
+        yield return new WaitForSeconds(bulwarkDuration);
+        bulwarkIsActive = false;
+        bulwarkPrefab.gameObject.SetActive(false);
+        bulwarkIndicator.gameObject.SetActive(false);
+        StopCoroutine("ActivateBulwark");
+    }
+
     public override IEnumerator TakeDamage()
     {
-        if (!immortal && immortalty)
+        if (berserkIsActive)
         {
-            healthStat.CurrentVal -= 10;
-
             if (!IsDead)
             {
-                MyAnimator.SetTrigger("damage");
-                immortal = true;
-                StartCoroutine(IndicateImmortal());
-                yield return new WaitForSeconds(immortalTime);
-
-                immortal = false;
+                yield return null;
             }
             else
             {
@@ -344,7 +366,7 @@ public class PlayerController : Character {
             {
                 MyAnimator.SetLayerWeight(1, 0);
                 MyAnimator.SetTrigger("death");
-            }
+            }            
         }
     }
 
