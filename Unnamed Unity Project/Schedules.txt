@@ -7,21 +7,20 @@ Beast_02/Consumed form
 
 -Upgrading menu UI
 (
--Enhanced ability viewing mechanic
+-Change text according to each diferrent ability in tooltip
 )
 -Passive/Agressive
 -Multiple Drops
-
--Self-Work
 -Screen Menu Pause
 -Finish basic skill tree 
 (
-Jump = Animation/Func
+Jump = Animation
 Jump Attack = Animation/Func
 Double Jump = Animation/Func
-Bulwark = Animation/Func
 Corruption = Animation/Func
 )
+
+-Continue Work on first level design
 
 Music-
 1st BGM:

@@ -6,7 +6,8 @@ using System.Collections.Generic;
 
 public delegate void DeadEventHandler();
 
-public class PlayerController : Character {
+public class PlayerController : Character
+{
     [SerializeField]
     private Stat healthStat;
 
@@ -17,7 +18,7 @@ public class PlayerController : Character {
     private int nextLevelXP = 100;
     private int level;
     private int skillPoint;
-    private Dictionary<string,SkillPoints> skills = new Dictionary<string, SkillPoints>();
+    private Dictionary<string, SkillPoints> skills = new Dictionary<string, SkillPoints>();
 
     private Animator skillAnimator;
 
@@ -61,13 +62,13 @@ public class PlayerController : Character {
     {
         get
         {
-            if(instance == null)
+            if (instance == null)
             {
                 instance = GameObject.FindObjectOfType<PlayerController>();
             }
             return instance;
         }
-    }     
+    }
 
     public Rigidbody2D MyRigidBody { get; set; }
 
@@ -79,11 +80,11 @@ public class PlayerController : Character {
     {
         get
         {
-            if(healthStat.CurrentVal <= 0)
+            if (healthStat.CurrentVal <= 0)
             {
                 OnDead();
             }
-            
+
             return healthStat.CurrentVal <= 0;
         }
     }
@@ -129,7 +130,7 @@ public class PlayerController : Character {
         soulsStat.Initialize();
         XPStat.Initialize();
         XPStat.CurrentVal = currentXP;
-        skills.Add("OrbBlast",new SkillPoints(1));
+        skills.Add("OrbBlast", new SkillPoints(1));
         skills.Add("OrbJaunt", new SkillPoints(1, "OrbBlast"));
         skills.Add("Bulwark", new SkillPoints(1, "OrbBlast"));
     }
@@ -143,7 +144,8 @@ public class PlayerController : Character {
         }
     }
 
-    void FixedUpdate() {
+    void FixedUpdate()
+    {
 
         if (!IsDead && !TakingDamage || TakingDamage && bulwarkIsActive)
         {
@@ -169,14 +171,14 @@ public class PlayerController : Character {
 
     public void OnDead()
     {
-        if(Dead != null)
+        if (Dead != null)
         {
             Dead();
         }
     }
 
     void HandleMovement(float horizontal)
-    {        
+    {
         if (IsFalling)
         {
             gameObject.layer = 11;
@@ -186,7 +188,7 @@ public class PlayerController : Character {
         {
             MyRigidBody.velocity = new Vector2(horizontal * moveSpeed, MyRigidBody.velocity.y);
         }
-        if(Jump && MyRigidBody.velocity.y == 0)
+        if (Jump && MyRigidBody.velocity.y == 0)
         {
             MyRigidBody.AddForce(new Vector2(0, jumpForce));
         }
@@ -210,9 +212,12 @@ public class PlayerController : Character {
             {
                 OrbAttack();
             }
-            if (Input.GetKeyDown(KeyCode.Q) && OrbJaunt == true && Orb != null)
+            if (Input.GetKeyDown(KeyCode.Q) && OrbJaunt == true)
             {
-                transform.position = FindObjectOfType<PlayerOrb>().transform.position;
+                if(Orb != null)
+                {
+                    transform.position = FindObjectOfType<PlayerOrb>().transform.position;
+                }
             }
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
@@ -242,7 +247,7 @@ public class PlayerController : Character {
 
     private bool IsGrounded()
     {
-        if(MyRigidBody.velocity.y <= 0)
+        if (MyRigidBody.velocity.y <= 0)
         {
             foreach (Transform point in groundPoints)
             {
@@ -307,7 +312,7 @@ public class PlayerController : Character {
     public void SetActive()
     {
         trig = false;
-        moveSpeed = 3;      
+        moveSpeed = 3;
     }
 
     public void SetInactive()
@@ -366,13 +371,13 @@ public class PlayerController : Character {
             {
                 MyAnimator.SetLayerWeight(1, 0);
                 MyAnimator.SetTrigger("death");
-            }            
+            }
         }
     }
 
     public override void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "EnemySword1")
+        if (other.tag == "EnemySword1")
         {
             healthStat.CurrentVal -= 5;
             StartCoroutine(TakeDamage());
@@ -428,9 +433,9 @@ public class PlayerController : Character {
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.tag == "Health")
+        if (other.gameObject.tag == "Health")
         {
-            if(healthStat.CurrentVal < healthStat.MaxVal)
+            if (healthStat.CurrentVal < healthStat.MaxVal)
             {
                 healthStat.CurrentVal += healVal;
                 Destroy(Instantiate(healthEffect.gameObject, transform.position, Quaternion.identity) as GameObject, healthEffect.startLifetime);
@@ -448,7 +453,7 @@ public class PlayerController : Character {
         }
         if (other.gameObject.tag == "XPOrb")
         {
-            GainXP(UnityEngine.Random.Range(11,15));
+            GainXP(UnityEngine.Random.Range(11, 15));
             Destroy(Instantiate(xpEffect.gameObject, other.transform.position, Quaternion.identity) as GameObject, healthEffect.startLifetime);
             Destroy(other.gameObject);
         }
@@ -456,7 +461,7 @@ public class PlayerController : Character {
 
     public void SpendSkillPoints(string skillName)
     {
-        if(UIManager.Instance.isUpgrading == false)
+        if (UIManager.Instance.isUpgrading == false)
         {
             int skillPointsRequired = skills[skillName].required;
             string parent = skills[skillName].parent;

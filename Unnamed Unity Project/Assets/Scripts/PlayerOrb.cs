@@ -39,6 +39,7 @@ public class PlayerOrb : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q) && PlayerController.Instance.OrbJaunt == true)
         {
             StartCoroutine(OrbWait());
+            PlayerController.Instance.soulsStat.CurrentVal -= PlayerController.Instance.orbJauntVal;
         }
     }
 
@@ -47,7 +48,6 @@ public class PlayerOrb : MonoBehaviour
         while (true)
         {
             damageCollider.enabled = true;
-            PlayerController.Instance.soulsStat.CurrentVal -= PlayerController.Instance.orbJauntVal;
             yield return new WaitForSeconds(0.1f);
             Destroy(Instantiate(orbEffect.gameObject, transform.position, Quaternion.identity) as GameObject, orbEffect.startLifetime);
             Destroy(gameObject);
