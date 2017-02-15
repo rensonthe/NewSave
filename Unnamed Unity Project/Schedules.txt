@@ -5,16 +5,13 @@ Add a cutscene
 Sprites-
 Beast_02/Consumed form
 
--Upgrading menu UI
-(
--Change text according to each diferrent ability in tooltip
-)
+-Optional/Tuning Stage
 -Passive/Agressive
--Multiple Drops
 -Screen Menu Pause
+
+-Multiple Drops
 -Finish basic skill tree 
 (
-Jump = Animation
 Jump Attack = Animation/Func
 Double Jump = Animation/Func
 Corruption = Animation/Func

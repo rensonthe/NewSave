@@ -4,12 +4,27 @@ using System.Collections;
 
 public class Tooltip : MonoBehaviour {
 
+    private static Tooltip instance;
+
+    public static Tooltip Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = GameObject.FindObjectOfType<Tooltip>();
+            }
+            return instance;
+        }
+    }
+
     public Image fadeImage;
     public Text abilityName;
     public Text abilityDescription;
-    public Text abilityDamage;
+    public Text abilityEffect;
     public Text abilityEnergy;
     public Text abilityExtra;
+    public Text abilityCost;
 
     private bool isInTransition;
     private float transition;
@@ -32,9 +47,10 @@ public class Tooltip : MonoBehaviour {
         fadeImage.color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, transition);
         abilityName.color = Color.Lerp(new Color(0, 0, 0, 0), Color.white, transition);
         abilityDescription.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0.9f,0.9f,0.9f,1), transition);
-        abilityDamage.color = Color.Lerp(new Color(0, 0, 0, 0), Color.red, transition);
+        abilityEffect.color = Color.Lerp(new Color(0, 0, 0, 0), Color.red, transition);
         abilityEnergy.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0.25f, 0.10f, 1, 1), transition);
         abilityExtra.color = Color.Lerp(new Color(0, 0, 0, 0), Color.white, transition);
+        abilityCost.color = Color.Lerp(new Color(0, 0, 0, 0), Color.yellow, transition);
 
         if (transition > 1 || transition < 0)
             isInTransition = false;

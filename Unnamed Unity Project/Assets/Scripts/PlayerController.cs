@@ -110,6 +110,7 @@ public class PlayerController : Character
     public bool OrbJaunt;
     public bool Bulwark;
     public bool bulwarkIsActive = false;
+    public float bulwarkVal;
     public float bulwarkDuration;
     private float bulwarkTimer;
     public float bulwarkCooldown;
@@ -337,6 +338,7 @@ public class PlayerController : Character
 
     public IEnumerator ActivateBulwark()
     {
+        soulsStat.CurrentVal -= bulwarkVal;
         bulwarkIsActive = true;
         bulwarkPrefab.gameObject.SetActive(true);
         bulwarkIndicator.gameObject.SetActive(true);
