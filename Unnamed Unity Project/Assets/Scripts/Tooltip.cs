@@ -64,25 +64,31 @@ public class Tooltip : MonoBehaviour {
         transition = (isShowing) ? 0 : 1;
     }
 
-    public IEnumerator FadeIn()
+    public IEnumerator FadeIn(TooltipText tooltipText)
     {
-        Fade(true, 1.25f);
-        yield return null;
+        if (tooltipText.Revealed)
+        {
+            Fade(true, 1.25f);
+            yield return null;
+        }
     }
 
-    public IEnumerator FadeOut()
+    public IEnumerator FadeOut(TooltipText tooltipText)
     {
-        Fade(false, 1.22f);
-        yield return null;
+        if (tooltipText.Revealed)
+        {
+            Fade(false, 1.22f);
+            yield return null;
+        }
     }
 
-    public void FadeInn()
-    {
-        StartCoroutine(FadeIn());
+    public void FadeInn(TooltipText tooltipText)
+    {        
+        StartCoroutine(FadeIn(tooltipText));
     }
 
-    public void FadeOutt()
+    public void FadeOutt(TooltipText tooltipText)
     {
-        StartCoroutine(FadeOut());
+        StartCoroutine(FadeOut(tooltipText));
     }
 }

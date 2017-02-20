@@ -30,7 +30,7 @@ public class LayerBehaviour : StateMachineBehaviour {
     {
         if (animator.GetLayerWeight(1) == 0 && animator.gameObject.layer != 10 && !player.IsFalling)
         {
-            animator.gameObject.layer = 0;
+            animator.gameObject.layer = 15;
         }
         if(animator.gameObject.layer == 11 || player.IsJumping)
         {
@@ -40,7 +40,7 @@ public class LayerBehaviour : StateMachineBehaviour {
                 boxCollider.offset = jumpeOffSet;
             }
         }
-        if (animator.gameObject.layer == 0 || animator.gameObject.layer == 10 && !player.IsJumping && animator.gameObject.layer != 11)
+        if (animator.gameObject.layer == 15 || animator.gameObject.layer == 10 && !player.IsJumping && animator.gameObject.layer != 11)
         {
             boxCollider.size = size;
             boxCollider.offset = offset;

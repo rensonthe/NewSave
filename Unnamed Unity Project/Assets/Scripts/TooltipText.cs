@@ -1,21 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class TooltipText : MonoBehaviour {
 
-    private static TooltipText instance;
-
-    public static TooltipText Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = GameObject.FindObjectOfType<TooltipText>();
-            }
-            return instance;
-        }
-    }
+    private bool revealed;
 
     public string abilityName;
     public string abilityDescription;
@@ -23,14 +12,32 @@ public class TooltipText : MonoBehaviour {
     public string abilityEnergy;
     public string abilityExtra;
     public string abilityCost;
+    public Image icon;
+
+    public bool Revealed
+    {
+        get
+        {
+            return revealed;
+        }
+
+        set
+        {
+            revealed = value;
+            icon.color = Color.white;
+        }
+    }
 
     public void SetText()
     {
-        Tooltip.Instance.abilityName.text = abilityName.ToString();
-        Tooltip.Instance.abilityDescription.text = abilityDescription.ToString();
-        Tooltip.Instance.abilityEffect.text = abilityEffect.ToString();
-        Tooltip.Instance.abilityEnergy.text = "Energy: " + abilityEnergy.ToString();
-        Tooltip.Instance.abilityExtra.text = abilityExtra.ToString();
-        Tooltip.Instance.abilityCost.text = abilityCost.ToString();
+        if (Revealed)
+        {
+            Tooltip.Instance.abilityName.text = abilityName.ToString();
+            Tooltip.Instance.abilityDescription.text = abilityDescription.ToString();
+            Tooltip.Instance.abilityEffect.text = abilityEffect.ToString();
+            Tooltip.Instance.abilityEnergy.text = "Energy: " + abilityEnergy.ToString();
+            Tooltip.Instance.abilityExtra.text = abilityExtra.ToString();
+            Tooltip.Instance.abilityCost.text = abilityCost.ToString();
+        }
     }
 }

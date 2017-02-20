@@ -160,13 +160,13 @@ public class Enemy : Character {
     {
         if (!Attack)
         {
-            if((GetDirection().x > 0 && transform.position.x < rightEdge.position.x) || (GetDirection().x < 0 && transform.position.x > leftEdge.position.x))
+            if ((GetDirection().x > 0 && transform.position.x < rightEdge.position.x) || (GetDirection().x < 0 && transform.position.x > leftEdge.position.x))
             {
                 MyAnimator.SetFloat("speed", 1);
 
                 transform.Translate(GetDirection() * (moveSpeed * Time.deltaTime), Space.World);
             }
-            else if(currentState is PatrolState)
+            else if (currentState is PatrolState)
             {
                 ChangeDirection();
             }
@@ -182,6 +182,10 @@ public class Enemy : Character {
     {
         base.OnTriggerEnter2D(other);
         currentState.OnTriggerEnter(other);
+        if (other.tag == "Orb" && Target == null)
+        {
+            Target = PlayerController.Instance.gameObject;
+        }
         if (other.tag == "Sword")
         {
             health -= 10;

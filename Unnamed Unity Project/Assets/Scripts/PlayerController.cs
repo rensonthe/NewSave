@@ -147,7 +147,6 @@ public class PlayerController : Character
 
     void FixedUpdate()
     {
-
         if (!IsDead && !TakingDamage || TakingDamage && bulwarkIsActive)
         {
             float horizontal = Input.GetAxis("Horizontal");
@@ -184,6 +183,10 @@ public class PlayerController : Character
         {
             gameObject.layer = 11;
             MyAnimator.SetBool("land", true);
+        }
+        else
+        {
+            MyAnimator.SetBool("land", false);
         }
         if (!Attack && (OnGround || airControl))
         {
@@ -511,6 +514,7 @@ public class PlayerController : Character
             Destroy(Instantiate(levelUpEffect.gameObject, transform.position, Quaternion.identity) as GameObject, levelUpEffect.startLifetime);
             XPStat.MaxVal = nextLevelXP;
             XPStat.CurrentVal = currentXP;
+            GetComponent<SkillPointHandler>().LevelUp(level);
         }
     }
 

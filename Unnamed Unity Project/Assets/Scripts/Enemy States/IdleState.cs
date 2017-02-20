@@ -32,10 +32,7 @@ public class IdleState : IEnemyState
 
     public void OnTriggerEnter(Collider2D other)
     {
-        if(other.tag == "Orb")
-        {
-            enemy.Target = PlayerController.Instance.gameObject;
-        }
+
     }
 
     private void Idle()
