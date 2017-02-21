@@ -5,6 +5,11 @@ public class SkillPointHandler : MonoBehaviour {
 
     public TooltipText[] tooltipText;
 
+    public void Awake()
+    {
+        tooltipText[0].Revealed = true;
+    }
+
     public void LevelUp(int level)
     {
         if (level == 1)

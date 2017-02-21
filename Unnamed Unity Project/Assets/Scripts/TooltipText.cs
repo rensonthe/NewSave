@@ -32,6 +32,7 @@ public class TooltipText : MonoBehaviour {
     {
         if (Revealed)
         {
+            Debug.Log("kappa");
             Tooltip.Instance.abilityName.text = abilityName.ToString();
             Tooltip.Instance.abilityDescription.text = abilityDescription.ToString();
             Tooltip.Instance.abilityEffect.text = abilityEffect.ToString();

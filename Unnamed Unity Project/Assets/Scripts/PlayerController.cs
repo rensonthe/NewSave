@@ -105,6 +105,9 @@ public class PlayerController : Character
         }
     }
 
+    public int totalJumps = 2;
+    public int currentJumps;
+
     public bool LMB;
     public bool RMB;
     public bool OrbJaunt;
@@ -183,6 +186,7 @@ public class PlayerController : Character
         {
             gameObject.layer = 11;
             MyAnimator.SetBool("land", true);
+            currentJumps = totalJumps;
         }
         else
         {
@@ -208,9 +212,14 @@ public class PlayerController : Character
             {
                 MyAnimator.SetTrigger("attack");
             }
-            if (Input.GetKeyDown(KeyCode.Space) && !IsFalling)
+            if (Input.GetKeyDown(KeyCode.Space) && !IsFalling && currentJumps > 0)
             {
                 MyAnimator.SetTrigger("jump");
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    currentJumps--;
+                    MyRigidBody.velocity = new Vector2(MyRigidBody.velocity.x, 5.5f);
+                }
             }
             if (Input.GetMouseButtonDown(1) && RMB == true)
             {

@@ -14,6 +14,9 @@ Beast_02/Consumed form
 (
 Jump Attack = Animation/Func
 Double Jump = Animation/Func
+{
+	Finalize ability and put in skill tree
+}
 Corruption = Animation/Func
 )
 
