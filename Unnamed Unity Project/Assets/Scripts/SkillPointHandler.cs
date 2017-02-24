@@ -12,13 +12,15 @@ public class SkillPointHandler : MonoBehaviour {
 
     public void LevelUp(int level)
     {
-        if (level == 1)
-        {
-            tooltipText[1].Revealed = true;
-        }
         if (level == 2)
         {
+            tooltipText[1].Revealed = true;
             tooltipText[2].Revealed = true;
+            tooltipText[3].Revealed = true;
+        }
+        if (level == 3)
+        {
+
         }
     }
 

@@ -6,7 +6,7 @@ Sprites-
 Beast_02/Consumed form
 
 -Optional/Tuning Stage
--Passive/Agressive
+-Stop moving when too near
 -Screen Menu Pause
 
 -Multiple Drops

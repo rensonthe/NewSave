@@ -137,7 +137,7 @@ public class Enemy : Character {
         {
             float xDir = Target.transform.position.x - transform.position.x;
 
-            if (xDir > 0 && facingRight || xDir < 0 && !facingRight)
+            if (xDir > 1 && facingRight || xDir < -1 && !facingRight)
             {
                 ChangeDirection();
             }

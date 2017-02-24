@@ -43,6 +43,8 @@ public class UIManager : MonoBehaviour {
     public GameObject glowOut2;
     public GameObject glowIn3;
     public GameObject glowOut3;
+    public GameObject glowIn4;
+    public GameObject glowOut4;
 
     // Use this for initialization
     void Start () {

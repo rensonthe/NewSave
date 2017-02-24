@@ -24,7 +24,7 @@ public class MeleeState : IEnemyState
         }
         else if (enemy.Target == null)
         {
-            enemy.ChangeState(new IdleState());
+            enemy.ChangeState(new HuntState());
         }
     }
 

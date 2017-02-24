@@ -120,6 +120,7 @@ public class PlayerController : Character
     public Transform bulwarkPrefab;
     public GameObject bulwarkIndicator;
     public bool berserkIsActive = false;
+    public bool DoubleJump = false;
 
     public Vector2 startPos;
 
@@ -137,6 +138,7 @@ public class PlayerController : Character
         skills.Add("OrbBlast", new SkillPoints(1));
         skills.Add("OrbJaunt", new SkillPoints(1, "OrbBlast"));
         skills.Add("Bulwark", new SkillPoints(1, "OrbBlast"));
+        skills.Add("DoubleJump", new SkillPoints(1, "OrbBlast"));
     }
 
     // Update is called once per frame
@@ -182,7 +184,7 @@ public class PlayerController : Character
 
     void HandleMovement(float horizontal)
     {
-        if (IsFalling)
+        if (IsFalling && !IsJumping)
         {
             gameObject.layer = 11;
             MyAnimator.SetBool("land", true);
@@ -215,10 +217,9 @@ public class PlayerController : Character
             if (Input.GetKeyDown(KeyCode.Space) && !IsFalling && currentJumps > 0)
             {
                 MyAnimator.SetTrigger("jump");
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space) && DoubleJump == true && Jump == true)
                 {
-                    currentJumps--;
-                    MyRigidBody.velocity = new Vector2(MyRigidBody.velocity.x, 5.5f);
+                    MyAnimator.SetTrigger("doublejump");
                 }
             }
             if (Input.GetMouseButtonDown(1) && RMB == true)
@@ -501,6 +502,10 @@ public class PlayerController : Character
                         break;
                     case "Bulwark":
                         Bulwark = true;
+                        skills[skillName].unlocked = true;
+                        break;
+                    case "DoubleJump":
+                        DoubleJump = true;
                         skills[skillName].unlocked = true;
                         break;
                 }
