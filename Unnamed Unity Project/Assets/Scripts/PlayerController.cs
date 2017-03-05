@@ -39,7 +39,6 @@ public class PlayerController : Character
     public bool trig = false;
 
     private Enemy enemy;
-    private float attackTimer;
     private float attackCooldown = 4f;
     private bool canThrow = true;
 
@@ -115,7 +114,6 @@ public class PlayerController : Character
     public bool bulwarkIsActive = false;
     public float bulwarkVal;
     public float bulwarkDuration;
-    private float bulwarkTimer;
     public float bulwarkCooldown;
     public Transform bulwarkPrefab;
     public GameObject bulwarkIndicator;
@@ -163,13 +161,6 @@ public class PlayerController : Character
             Flip(horizontal);
 
             HandleLayers();
-
-            attackTimer += Time.deltaTime;
-
-            if (!bulwarkIsActive)
-            {
-                bulwarkTimer += Time.deltaTime;
-            }
         }
 
     }
@@ -217,7 +208,7 @@ public class PlayerController : Character
             if (Input.GetKeyDown(KeyCode.Space) && !IsFalling && currentJumps > 0)
             {
                 MyAnimator.SetTrigger("jump");
-                if (Input.GetKeyDown(KeyCode.Space) && DoubleJump == true && Jump == true)
+                if (Input.GetKeyDown(KeyCode.Space) && DoubleJump == true && IsJumping == true)
                 {
                     MyAnimator.SetTrigger("doublejump");
                 }
@@ -235,11 +226,11 @@ public class PlayerController : Character
             }
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                if (bulwarkTimer >= bulwarkCooldown && Bulwark == true)
-                {
-                    StartCoroutine("ActivateBulwark");
-                    bulwarkTimer = 0;
-                }
+                //if (bulwarkTimer >= bulwarkCooldown && Bulwark == true)
+                //{
+                //    StartCoroutine("ActivateBulwark");
+                //    bulwarkTimer = 0;
+                //}
             }
             if (Input.GetKeyDown(KeyCode.L))
             {
@@ -309,15 +300,9 @@ public class PlayerController : Character
 
     private void OrbAttack()
     {
-        if (attackTimer >= attackCooldown)
+        if (CooldownManager.Instance.OrbLaunchIsAllowed && soulsStat.CurrentVal > 0)
         {
-            canThrow = true;
-            attackTimer = 0;
-        }
-
-        if (canThrow && soulsStat.CurrentVal > 0)
-        {
-            canThrow = false;
+            CooldownManager.Instance.LaunchOrb();
             MyAnimator.SetTrigger("throw");
             soulsStat.CurrentVal -= orbLaunchVal;
         }

@@ -16,6 +16,8 @@ public class SkillFillEnd1Behaviour : StateMachineBehaviour {
     {
         if (animator.GetComponent<Image>().fillAmount == 1)
         {
+            UIManager.Instance.trig = false;
+            UIManager.Instance.isUpgrading = false;
             UIManager.Instance.glowIn1.SetActive(true);
             UIManager.Instance.glowOut1.SetActive(true);
         }

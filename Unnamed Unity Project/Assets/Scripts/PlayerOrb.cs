@@ -7,7 +7,7 @@ public class PlayerOrb : MonoBehaviour
     public ParticleSystem orbEffect;
     public CircleCollider2D damageCollider;
     public float speed = 5f;
-    private float orbDuration = 2.5f;
+    private float orbTimer = 2.5f;
 
     private Rigidbody2D myRigidBody;
 
@@ -22,8 +22,8 @@ public class PlayerOrb : MonoBehaviour
     void Update()
     {
         OrbMechanic();
-        orbDuration -= Time.deltaTime;
-        if(orbDuration <= 0)
+        orbTimer -= Time.deltaTime;
+        if(orbTimer <= 0)
         {
             Destroy(gameObject);
         }

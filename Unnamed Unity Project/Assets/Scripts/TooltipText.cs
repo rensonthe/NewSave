@@ -4,6 +4,7 @@ using System.Collections;
 
 public class TooltipText : MonoBehaviour {
 
+    [SerializeField]
     private bool revealed;
 
     public string abilityName;
