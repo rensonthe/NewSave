@@ -6,20 +6,13 @@ Sprites-
 Beast_02/Consumed form
 
 -Optional/Tuning Stage
--Chain Combo System/Animation for Corruption
+-Chain Combo System for Corruption
+-Corruption Transformation/Deformation Function
+-Mentality Function(Change flowchart according to the scaling)
+-BOSS TIME HELL YEAH!!!
 -Screen Menu Pause 
 
 -Multiple Drops
--Finish basic skill tree 
-(
-Jump Attack = Animation/Func
-Double Jump = Animation/Func
-{
-	Finalize ability and put in skill tree
-}
-Corruption = Animation/Func
-)
-
 -Continue Work on first level design
 
 Music-
@@ -28,12 +21,3 @@ Place = Dark Forest
 Instruments = 2
 Song Length = 30 seconds
 Composing Method: Chords-first
-
--Following Week Sched
--Anims:
-(Jump(Attack) formats = just pop up the shoulders to signify mid-air)
--player_jump_attack
--player_jump_orb_launch
--player_corruption_jump_attack
--player_corruption_jump
--player_corruption_idle_headturn
