@@ -104,9 +104,6 @@ public class PlayerController : Character
         }
     }
 
-    public int totalJumps = 2;
-    public int currentJumps;
-
     public bool LMB;
     public bool RMB;
     public bool OrbJaunt;
@@ -119,6 +116,8 @@ public class PlayerController : Character
     public GameObject bulwarkIndicator;
     public bool berserkIsActive = false;
     public bool DoubleJump = false;
+    public bool canDoubleJump = true;
+    private int baseLayer = 0;
 
     public Vector2 startPos;
 
@@ -179,7 +178,10 @@ public class PlayerController : Character
         {
             gameObject.layer = 11;
             MyAnimator.SetBool("land", true);
-            currentJumps = totalJumps;
+        }
+        if (OnGround)
+        {
+            canDoubleJump = true;
         }
         else
         {
@@ -201,17 +203,23 @@ public class PlayerController : Character
     {
         if (trig == false)
         {
+            if (Input.GetKeyDown(KeyCode.V) && LMB == true)
+            {
+                Corruption();
+            }
             if (Input.GetMouseButtonDown(0) && LMB == true)
             {
                 MyAnimator.SetTrigger("attack");
             }
-            if (Input.GetKeyDown(KeyCode.Space) && !IsFalling && currentJumps > 0)
+            if (Input.GetKeyDown(KeyCode.Space) && !IsFalling)
             {
                 MyAnimator.SetTrigger("jump");
-                if (Input.GetKeyDown(KeyCode.Space) && DoubleJump == true && IsJumping == true)
-                {
-                    MyAnimator.SetTrigger("doublejump");
-                }
+            }
+            if (Input.GetKeyDown(KeyCode.Space) && canDoubleJump == true && !OnGround)
+            {
+                MyAnimator.SetTrigger("doublejump");
+                MyRigidBody.velocity = new Vector2(MyRigidBody.velocity.x, 6.5f);
+                canDoubleJump = false;
             }
             if (Input.GetMouseButtonDown(1) && RMB == true)
             {
@@ -237,6 +245,19 @@ public class PlayerController : Character
                 GainXP(nextLevelXP);
             }
         }
+    }
+
+    public void Lunge()
+    {
+        if (facingRight)
+        {
+            MyRigidBody.AddForce(transform.right * 25);
+        }
+        if (!facingRight)
+        {
+            MyRigidBody.AddForce(-transform.right * 25);
+        }
+
     }
 
     void Flip(float horizontal)
@@ -280,6 +301,12 @@ public class PlayerController : Character
         {
             MyAnimator.SetLayerWeight(1, 0);
         }
+    }
+
+    public void Corruption()
+    {
+        MyAnimator.SetLayerWeight(0, 0);
+        MyAnimator.SetLayerWeight(2, 1);
     }
 
     public override void SpawnOrb(int value)

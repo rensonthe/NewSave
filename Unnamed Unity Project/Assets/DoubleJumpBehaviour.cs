@@ -9,8 +9,6 @@ public class DoubleJumpBehaviour : StateMachineBehaviour {
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         PlayerController.Instance.soulsStat.CurrentVal -= soulCost;
-        PlayerController.Instance.currentJumps--;
-        PlayerController.Instance.MyRigidBody.velocity = new Vector2(PlayerController.Instance.MyRigidBody.velocity.x, 6.5f);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

@@ -15,6 +15,11 @@ public class AttackBehaviour : StateMachineBehaviour {
             if (PlayerController.Instance.OnGround)
             {
                 PlayerController.Instance.MyRigidBody.velocity = Vector2.zero;
+                if (animator.GetLayerWeight(2) == 1)
+                {
+                    Debug.Log("run");
+                    PlayerController.Instance.Lunge();
+                }
             }
         }
 	}
