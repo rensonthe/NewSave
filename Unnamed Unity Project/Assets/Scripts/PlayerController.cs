@@ -117,7 +117,8 @@ public class PlayerController : Character
     public bool berserkIsActive = false;
     public bool DoubleJump = false;
     public bool canDoubleJump = true;
-    private int baseLayer = 0;
+    private bool isInCorruption = false;
+    public float corruptionDuration = 30f;
 
     public Vector2 startPos;
 
@@ -305,8 +306,29 @@ public class PlayerController : Character
 
     public void Corruption()
     {
-        MyAnimator.SetLayerWeight(0, 0);
-        MyAnimator.SetLayerWeight(2, 1);
+        if (!isInCorruption)
+        {
+            MyAnimator.SetLayerWeight(2, 1);
+            MyAnimator.SetTrigger("corruption");
+            isInCorruption = true;
+            StartCoroutine(CorruptionActive());
+            CooldownManager.Instance.Corruption();
+        }
+    }
+
+    public void DeCorruption()
+    {
+        MyAnimator.SetTrigger("corruption_deform");
+        isInCorruption = false;
+    }
+
+    public IEnumerator CorruptionActive()
+    {
+        if (isInCorruption)
+        {
+            yield return new WaitForSeconds(corruptionDuration);
+            DeCorruption();
+        }
     }
 
     public override void SpawnOrb(int value)
