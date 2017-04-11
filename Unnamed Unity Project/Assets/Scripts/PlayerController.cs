@@ -121,11 +121,14 @@ public class PlayerController : Character
     public float corruptionDuration = 30f;
 
     public Vector2 startPos;
+    public TrailRenderer trailRenderer;
+    public GameObject vaultingCircle;
 
     // Use this for initialization
     public override void Start()
     {
         base.Start();
+        trailRenderer.sortingOrder = 2;
         startPos = transform.position;
         spriteRenderer = GetComponent<SpriteRenderer>();
         MyRigidBody = GetComponent<Rigidbody2D>();
@@ -220,6 +223,8 @@ public class PlayerController : Character
             {
                 MyAnimator.SetTrigger("doublejump");
                 MyRigidBody.velocity = new Vector2(MyRigidBody.velocity.x, 6.5f);
+                vaultingCircle.SetActive(true);
+                vaultingCircle.GetComponent<Animator>().SetTrigger("player_double_jump");
                 canDoubleJump = false;
             }
             if (Input.GetMouseButtonDown(1) && RMB == true)
@@ -252,11 +257,11 @@ public class PlayerController : Character
     {
         if (facingRight)
         {
-            MyRigidBody.AddForce(transform.right * 25);
+            MyRigidBody.AddForce(transform.right * 50);
         }
         if (!facingRight)
         {
-            MyRigidBody.AddForce(-transform.right * 25);
+            MyRigidBody.AddForce(-transform.right * 50);
         }
 
     }
@@ -304,6 +309,16 @@ public class PlayerController : Character
         }
     }
 
+    public void RunTrailPositionChange()
+    {
+        trailRenderer.transform.localPosition = Vector3.Lerp(new Vector2(-0.1f, trailRenderer.transform.localPosition.y), new Vector2(-0.98f, trailRenderer.transform.localPosition.y), 1);
+    }
+
+    public void IdleTrailPositionChange()
+    {
+        trailRenderer.transform.localPosition = new Vector2(-0.1f, trailRenderer.transform.localPosition.y);
+    }
+
     public void Corruption()
     {
         if (!isInCorruption)
@@ -313,11 +328,13 @@ public class PlayerController : Character
             isInCorruption = true;
             StartCoroutine(CorruptionActive());
             CooldownManager.Instance.Corruption();
+            trailRenderer.gameObject.SetActive(true);
         }
     }
 
     public void DeCorruption()
     {
+        trailRenderer.gameObject.SetActive(false);
         MyAnimator.SetTrigger("corruption_deform");
         isInCorruption = false;
     }
