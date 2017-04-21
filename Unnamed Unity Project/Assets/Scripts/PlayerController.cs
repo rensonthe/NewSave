@@ -185,6 +185,10 @@ public class PlayerController : Character
         }
         if (OnGround)
         {
+            if (canDoubleJump == false)
+            {
+                MyAnimator.SetBool("land", true);
+            }
             canDoubleJump = true;
         }
         else
@@ -317,6 +321,14 @@ public class PlayerController : Character
     public void IdleTrailPositionChange()
     {
         trailRenderer.transform.localPosition = new Vector2(-0.1f, trailRenderer.transform.localPosition.y);
+    }
+
+    public override void MeleeAttack()
+    {
+        if (!isInCorruption)
+        {
+            base.MeleeAttack();
+        }
     }
 
     public void Corruption()

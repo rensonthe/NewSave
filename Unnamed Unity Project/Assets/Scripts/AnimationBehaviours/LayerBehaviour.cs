@@ -40,7 +40,7 @@ public class LayerBehaviour : StateMachineBehaviour {
                 boxCollider.offset = jumpeOffSet;
             }
         }
-        if (animator.gameObject.layer == 15 && !player.IsJumping && !player.IsFalling || animator.gameObject.layer == 10 && !player.IsJumping && player.IsFalling && animator.gameObject.layer != 11)
+        if (animator.gameObject.layer == 15|| animator.gameObject.layer == 10)
         {
             boxCollider.size = size;
             boxCollider.offset = offset;

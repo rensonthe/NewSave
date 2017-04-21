@@ -70,8 +70,14 @@ public abstract class Character : MonoBehaviour {
         }
     }
 
-    public void MeleeAttack()
+    public virtual void MeleeAttack()
     {
+        SwordCollider.enabled = true;
+    }
+
+    public void CorruptedMeleeAttack()
+    {
+        Debug.Log("ok");
         SwordCollider.enabled = true;
     }
 
