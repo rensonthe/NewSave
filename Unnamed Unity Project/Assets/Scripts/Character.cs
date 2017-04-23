@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public abstract class Character : MonoBehaviour {
 
+    [Header("Character")]
     public GameObject Orb;
 
     public float moveSpeed = 3;
@@ -77,7 +78,6 @@ public abstract class Character : MonoBehaviour {
 
     public void CorruptedMeleeAttack()
     {
-        Debug.Log("ok");
         SwordCollider.enabled = true;
     }
 

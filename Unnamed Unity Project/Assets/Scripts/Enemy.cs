@@ -189,7 +189,6 @@ public class Enemy : Character {
         if (other.tag == "Sword")
         {
             health -= 10;
-            Debug.Log("run");
             StartCoroutine(TakeDamage());
         }
         if (other.tag == "Orb")

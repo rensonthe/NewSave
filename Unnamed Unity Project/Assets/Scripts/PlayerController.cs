@@ -8,55 +8,7 @@ public delegate void DeadEventHandler();
 
 public class PlayerController : Character
 {
-    [SerializeField]
-    private Stat healthStat;
-
-    public Stat XPStat;
-    public Stat soulsStat;
-
-    private int currentXP;
-    private int nextLevelXP = 100;
-    private int level;
-    private int skillPoint;
-    private Dictionary<string, SkillPoints> skills = new Dictionary<string, SkillPoints>();
-
-    private Animator skillAnimator;
-
-    public float energyVal;
-    public float healVal;
-    public float orbLaunchVal;
-    public float orbJauntVal;
-    public ParticleSystem levelUpEffect;
-    public ParticleSystem healthEffect;
-    public ParticleSystem xpEffect;
-    public ParticleSystem energyEffect;
-    public GameObject playerSoul;
-    public Transform[] groundPoints;
-    public LayerMask whatIsGround;
-    public float jumpForce;
-    public float groundRadius;
-    public bool airControl;
-    public bool trig = false;
-
-    private Enemy enemy;
-    private float attackCooldown = 4f;
-    private bool canThrow = true;
-
-    public bool immortalty;
-    private bool immortal = false;
-    public float immortalTime;
-
-    private SpriteRenderer spriteRenderer;
-    private bool isCreated;
-    private Camera cam;
-    private Vector3 mousePosition;
-    public float alphaLevel = 1;
-    public float totalTime = 0;
-
-    public event DeadEventHandler Dead;
-
     private static PlayerController instance;
-
     public static PlayerController Instance
     {
         get
@@ -68,13 +20,82 @@ public class PlayerController : Character
             return instance;
         }
     }
+    public event DeadEventHandler Dead;
+
+    [Header("Stats")]
+    [SerializeField]
+    private Stat healthStat;
+    public Stat XPStat;
+    public Stat soulsStat;
+    private int currentXP;
+    private int nextLevelXP = 100;
+    private int level;
+    private int skillPoint;
+    private Dictionary<string, SkillPoints> skills = new Dictionary<string, SkillPoints>();
+    private Animator skillAnimator;
+
+    [Header("SkillCosts")]
+    public float energyVal;
+    public float healVal;
+    public float orbLaunchVal;
+    public float orbJauntVal;
+    public float doubleJumpVal;
+    [Header("Effects")]
+    public ParticleSystem levelUpEffect;
+    public ParticleSystem healthEffect;
+    public ParticleSystem xpEffect;
+    public ParticleSystem energyEffect;
+    [Header("Assign")]
+    public Vector2 startPos;
+    public TrailRenderer trailRenderer;
+    public GameObject playerSoul;
+    public Transform[] groundPoints;
+    public LayerMask whatIsGround;
+    [Header("Controls")]
+    public float jumpForce;
+    public float groundRadius;
+    public bool immortalty;
+    private bool immortal = false;
+    public float immortalTime;
+
+    [Header("Don't Bother")]
+    public bool airControl;
+    public bool trig = false;
+    public float alphaLevel = 1;
+    public float totalTime = 0;
+    private Enemy enemy;
+    private float attackCooldown = 4f;
+    private bool canThrow = true;
+    private SpriteRenderer spriteRenderer;
+    private bool isCreated;
+    private Camera cam;
+    private Vector3 mousePosition;  
+
+    [Header("Basic Attacks")]
+    public bool LMB;
+    public bool RMB;
+    [Header("Orb Jaunt")]
+    public bool OrbJaunt;
+    [Header("Bulwark")]
+    public bool Bulwark;
+    public bool bulwarkIsActive = false;
+    public float bulwarkVal;
+    public float bulwarkDuration;
+    public float bulwarkCooldown;
+    public Transform bulwarkPrefab;
+    public GameObject bulwarkIndicator;
+    private bool berserkIsActive;
+    [Header("Double Jump")]
+    public bool DoubleJump = false;
+    public bool canDoubleJump = true;
+    [Header("Corruption")]
+    private bool isInCorruption = false;
+    public float corruptionDuration = 30f;
+    public GameObject vaultingCircle;
 
     public Rigidbody2D MyRigidBody { get; set; }
-
     public bool Jump { get; set; }
-
     public bool OnGround { get; set; }
-
     public override bool IsDead
     {
         get
@@ -87,7 +108,6 @@ public class PlayerController : Character
             return healthStat.CurrentVal <= 0;
         }
     }
-
     public bool IsFalling
     {
         get
@@ -95,7 +115,6 @@ public class PlayerController : Character
             return MyRigidBody.velocity.y < 0;
         }
     }
-
     public bool IsJumping
     {
         get
@@ -103,26 +122,6 @@ public class PlayerController : Character
             return MyRigidBody.velocity.y > 0;
         }
     }
-
-    public bool LMB;
-    public bool RMB;
-    public bool OrbJaunt;
-    public bool Bulwark;
-    public bool bulwarkIsActive = false;
-    public float bulwarkVal;
-    public float bulwarkDuration;
-    public float bulwarkCooldown;
-    public Transform bulwarkPrefab;
-    public GameObject bulwarkIndicator;
-    public bool berserkIsActive = false;
-    public bool DoubleJump = false;
-    public bool canDoubleJump = true;
-    private bool isInCorruption = false;
-    public float corruptionDuration = 30f;
-
-    public Vector2 startPos;
-    public TrailRenderer trailRenderer;
-    public GameObject vaultingCircle;
 
     // Use this for initialization
     public override void Start()
@@ -223,8 +222,9 @@ public class PlayerController : Character
             {
                 MyAnimator.SetTrigger("jump");
             }
-            if (Input.GetKeyDown(KeyCode.Space) && canDoubleJump == true && !OnGround)
+            if (Input.GetKeyDown(KeyCode.Space) && canDoubleJump == true && !OnGround && soulsStat.CurrentVal >= doubleJumpVal)
             {
+                soulsStat.CurrentVal -= doubleJumpVal;
                 MyAnimator.SetTrigger("doublejump");
                 MyRigidBody.velocity = new Vector2(MyRigidBody.velocity.x, 6.5f);
                 vaultingCircle.SetActive(true);
@@ -242,13 +242,9 @@ public class PlayerController : Character
                     transform.position = FindObjectOfType<PlayerOrb>().transform.position;
                 }
             }
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKeyDown(KeyCode.Alpha1) && Bulwark == true)
             {
-                //if (bulwarkTimer >= bulwarkCooldown && Bulwark == true)
-                //{
-                //    StartCoroutine("ActivateBulwark");
-                //    bulwarkTimer = 0;
-                //}
+                CooldownManager.Instance.Bulwark();
             }
             if (Input.GetKeyDown(KeyCode.L))
             {
@@ -410,19 +406,6 @@ public class PlayerController : Character
 
             yield return new WaitForSeconds(.2f);
         }
-    }
-
-    public IEnumerator ActivateBulwark()
-    {
-        soulsStat.CurrentVal -= bulwarkVal;
-        bulwarkIsActive = true;
-        bulwarkPrefab.gameObject.SetActive(true);
-        bulwarkIndicator.gameObject.SetActive(true);
-        yield return new WaitForSeconds(bulwarkDuration);
-        bulwarkIsActive = false;
-        bulwarkPrefab.gameObject.SetActive(false);
-        bulwarkIndicator.gameObject.SetActive(false);
-        StopCoroutine("ActivateBulwark");
     }
 
     public override IEnumerator TakeDamage()
