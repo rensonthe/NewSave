@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CorruptionDeformBehaviour : StateMachineBehaviour {
+public class JumpAttackBehaviour : StateMachineBehaviour {
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        PlayerController.Instance.moveSpeed = 0;
+        if(PlayerController.Instance.isInCorruption)
+        animator.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2 (0, -10), ForceMode2D.Impulse);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -15,12 +16,9 @@ public class CorruptionDeformBehaviour : StateMachineBehaviour {
     //}
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        PlayerController.Instance.moveSpeed = 3;
-        PlayerController.Instance.MyAnimator.SetLayerWeight(2, 0);
-        PlayerController.Instance.MyAnimator.SetLayerWeight(3, 0);
-    }
+    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+    //
+    //}
 
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {

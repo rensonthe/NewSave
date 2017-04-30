@@ -13,7 +13,9 @@ public abstract class Character : MonoBehaviour {
 
     public int health;
 
-    public EdgeCollider2D swordCollider;
+    public EdgeCollider2D []swordCollider;
+
+    private int colliderIndex;
 
     public List<string> damageSources;
 
@@ -27,7 +29,7 @@ public abstract class Character : MonoBehaviour {
 
     public Animator MyAnimator { get; private set; }
 
-    public EdgeCollider2D SwordCollider
+    public EdgeCollider2D []SwordCollider
     {
         get
         {
@@ -73,12 +75,18 @@ public abstract class Character : MonoBehaviour {
 
     public virtual void MeleeAttack()
     {
-        SwordCollider.enabled = true;
+        SwordCollider[0].enabled = true;
     }
 
-    public void CorruptedMeleeAttack()
+    public void CorruptedMeleeAttack(int c)
     {
-        SwordCollider.enabled = true;
+        colliderIndex = c;
+        SwordCollider[c].enabled = true;
+    }
+
+    public void DisableCollider()
+    {
+        SwordCollider[colliderIndex].enabled = false;
     }
 
     public virtual void OnTriggerEnter2D(Collider2D other)

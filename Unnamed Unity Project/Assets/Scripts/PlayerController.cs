@@ -69,7 +69,8 @@ public class PlayerController : Character
     private SpriteRenderer spriteRenderer;
     private bool isCreated;
     private Camera cam;
-    private Vector3 mousePosition;  
+    private Vector3 mousePosition;
+    public bool isInCorruption = false;
 
     [Header("Basic Attacks")]
     public bool LMB;
@@ -89,7 +90,6 @@ public class PlayerController : Character
     public bool DoubleJump = false;
     public bool canDoubleJump = true;
     [Header("Corruption")]
-    private bool isInCorruption = false;
     public float corruptionDuration = 30f;
     public GameObject vaultingCircle;
 
@@ -332,6 +332,7 @@ public class PlayerController : Character
         if (!isInCorruption)
         {
             MyAnimator.SetLayerWeight(2, 1);
+            MyAnimator.SetLayerWeight(3, 1);
             MyAnimator.SetTrigger("corruption");
             isInCorruption = true;
             StartCoroutine(CorruptionActive());

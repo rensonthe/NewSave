@@ -32,7 +32,7 @@ public class AttackBehaviour : StateMachineBehaviour {
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 
         animator.GetComponent<Character>().Attack = false;
-        animator.GetComponent<Character>().SwordCollider.enabled = false;
+        animator.GetComponent<Character>().DisableCollider();
         animator.ResetTrigger("attack");
         animator.ResetTrigger("throw");
 	}
