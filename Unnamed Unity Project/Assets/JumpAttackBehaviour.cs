@@ -6,8 +6,11 @@ public class JumpAttackBehaviour : StateMachineBehaviour {
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(PlayerController.Instance.isInCorruption)
-        animator.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2 (0, -10), ForceMode2D.Impulse);
+        if (PlayerController.Instance.isInCorruption)
+        {
+            PlayerController.Instance.SetInactive();
+            animator.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, -10), ForceMode2D.Impulse);
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -16,9 +19,14 @@ public class JumpAttackBehaviour : StateMachineBehaviour {
     //}
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-    //
-    //}
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        if (PlayerController.Instance.isInCorruption)
+        {
+            PlayerController.Instance.SetActive();
+            PlayerController.Instance.moveSpeed = 4.5f;
+        }
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {

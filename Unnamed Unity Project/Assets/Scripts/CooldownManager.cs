@@ -93,6 +93,7 @@ public class CooldownManager : MonoBehaviour {
     {
         if (bulwarkIsAllowed)
         {
+            PlayerController.Instance.MyAnimator.SetTrigger("bulwark");
             PlayerController.Instance.soulsStat.CurrentVal -= PlayerController.Instance.bulwarkVal;
             PlayerController.Instance.bulwarkIsActive = true;
             bulwarkIconImage.fillAmount = 0;

@@ -46,6 +46,7 @@ public class PlayerController : Character
     public ParticleSystem xpEffect;
     public ParticleSystem energyEffect;
     [Header("Assign")]
+    public GameObject skillPointLight;
     public Vector2 startPos;
     public TrailRenderer trailRenderer;
     public GameObject playerSoul;
@@ -61,6 +62,7 @@ public class PlayerController : Character
     [Header("Don't Bother")]
     public bool airControl;
     public bool trig = false;
+    public bool abilityTrig = false;
     public float alphaLevel = 1;
     public float totalTime = 0;
     private Enemy enemy;
@@ -147,6 +149,14 @@ public class PlayerController : Character
         if (!IsDead)
         {
             HandleInput();
+            if (skillPoint > 0)
+            {
+                skillPointLight.SetActive(true);
+            }
+            else
+            {
+                skillPointLight.SetActive(false);
+            }
         }
     }
 
@@ -218,6 +228,21 @@ public class PlayerController : Character
             {
                 MyAnimator.SetTrigger("attack");
             }
+            if (abilityTrig == false)
+            {
+                if (Input.GetMouseButtonDown(1) && RMB == true)
+                {
+                    OrbAttack();
+                }
+                if (Input.GetKeyDown(KeyCode.Q) && OrbJaunt == true)
+                {
+                    if (Orb != null)
+                    {
+                        transform.position = FindObjectOfType<PlayerOrb>().transform.position;
+                    }
+                }
+            }
+
             if (Input.GetKeyDown(KeyCode.Space) && !IsFalling)
             {
                 MyAnimator.SetTrigger("jump");
@@ -230,17 +255,6 @@ public class PlayerController : Character
                 vaultingCircle.SetActive(true);
                 vaultingCircle.GetComponent<Animator>().SetTrigger("player_double_jump");
                 canDoubleJump = false;
-            }
-            if (Input.GetMouseButtonDown(1) && RMB == true)
-            {
-                OrbAttack();
-            }
-            if (Input.GetKeyDown(KeyCode.Q) && OrbJaunt == true)
-            {
-                if(Orb != null)
-                {
-                    transform.position = FindObjectOfType<PlayerOrb>().transform.position;
-                }
             }
             if (Input.GetKeyDown(KeyCode.Alpha1) && Bulwark == true)
             {
@@ -331,6 +345,7 @@ public class PlayerController : Character
     {
         if (!isInCorruption)
         {
+            abilityTrig = true;
             MyAnimator.SetLayerWeight(2, 1);
             MyAnimator.SetLayerWeight(3, 1);
             MyAnimator.SetTrigger("corruption");
@@ -343,6 +358,7 @@ public class PlayerController : Character
 
     public void DeCorruption()
     {
+        abilityTrig = false;
         trailRenderer.gameObject.SetActive(false);
         MyAnimator.SetTrigger("corruption_deform");
         isInCorruption = false;
