@@ -217,6 +217,7 @@ public class Enemy : Character {
             yield return new WaitForSeconds(1f);
             Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity) as GameObject, deathEffect.startLifetime);
             Instantiate(XPOrb, transform.position, Quaternion.identity);
+            PlayerController.Instance.currentCorruption += 5;
             yield return null;
         }
     }

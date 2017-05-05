@@ -31,8 +31,8 @@ public class CooldownManager : MonoBehaviour {
     public bool OrbLaunchIsAllowed { get { return orbLaunchisAllowed; } }
 
     private float corruptionTimer;
-    private float corruptionCharges;
-    private bool corruptionIsAllowed = true;
+    public float corruptionCharges;
+    private bool corruptionIsAllowed = false;
     public bool CorruptionIsAllowed { get { return corruptionIsAllowed; } }
 
     private float bulwarkTimer;
@@ -45,14 +45,29 @@ public class CooldownManager : MonoBehaviour {
     void Start () {
         bulwarkTimer = bulwarkCooldown;
         orbLaunchTimer = orbLaunchCooldown;
+        corruptionTimer = PlayerController.Instance.corruptionDuration;
 	}
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(corruptionCharges);
+        Debug.Log(corruptionTimer);
         OrbLaunchCooldown();
         CorruptionDuration();
         BulwarkCooldown();
+        if(PlayerController.Instance.currentCorruption == 100 && corruptionCharges == 0 && !PlayerController.Instance.isInCorruption)
+        {
+            corruptionCharges++;
+        }
+        if(corruptionCharges == 1)
+        {
+            corruptionIsAllowed = true;
+        }
+        if (PlayerController.Instance.isInCorruption)
+        {
+            PlayerController.Instance.currentCorruption = corruptionIconImage.fillAmount;
+        }
     }
 
     private void HandleCooldown(Image content, float timeLeft, float maxTime)
@@ -129,15 +144,14 @@ public class CooldownManager : MonoBehaviour {
     {
         if (corruptionIsAllowed)
         {
-            corruptionIconImage.fillAmount = 1;
-            corruptionIconImage.gameObject.SetActive(true);
             corruptionIsAllowed = false;
+            corruptionCharges--;
         }
     }
 
     public void CorruptionDuration()
     {
-        if (!corruptionIsAllowed)
+        if (corruptionIsAllowed)
         {
             corruptionTimer += Time.deltaTime;
             HandleCooldown(corruptionIconImage, PlayerController.Instance.corruptionDuration - corruptionTimer, PlayerController.Instance.corruptionDuration);
@@ -145,7 +159,6 @@ public class CooldownManager : MonoBehaviour {
             {
                 corruptionIsAllowed = true;
                 corruptionTimer = 0;
-                corruptionIconImage.gameObject.SetActive(false);
             }
         }
     }

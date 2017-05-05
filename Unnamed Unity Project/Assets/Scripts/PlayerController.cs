@@ -27,6 +27,8 @@ public class PlayerController : Character
     private Stat healthStat;
     public Stat XPStat;
     public Stat soulsStat;
+    public Stat corruptionStat;
+    public float currentCorruption = 0;
     private int currentXP;
     private int nextLevelXP = 100;
     private int level;
@@ -136,6 +138,7 @@ public class PlayerController : Character
         healthStat.Initialize();
         soulsStat.Initialize();
         XPStat.Initialize();
+        corruptionStat.Initialize();
         XPStat.CurrentVal = currentXP;
         skills.Add("OrbBlast", new SkillPoints(1));
         skills.Add("OrbJaunt", new SkillPoints(1, "OrbBlast"));
@@ -146,9 +149,13 @@ public class PlayerController : Character
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(isInCorruption);
         if (!IsDead)
         {
             HandleInput();
+
+                corruptionStat.CurrentVal = currentCorruption;
+
             if (skillPoint > 0)
             {
                 skillPointLight.SetActive(true);
@@ -263,6 +270,7 @@ public class PlayerController : Character
             if (Input.GetKeyDown(KeyCode.L))
             {
                 GainXP(nextLevelXP);
+                currentCorruption = 100;
             }
         }
     }
@@ -343,7 +351,7 @@ public class PlayerController : Character
 
     public void Corruption()
     {
-        if (!isInCorruption)
+        if (!isInCorruption && CooldownManager.Instance.corruptionCharges == 1)
         {
             abilityTrig = true;
             MyAnimator.SetLayerWeight(2, 1);
@@ -361,6 +369,7 @@ public class PlayerController : Character
         abilityTrig = false;
         trailRenderer.gameObject.SetActive(false);
         MyAnimator.SetTrigger("corruption_deform");
+        currentCorruption = 0;
         isInCorruption = false;
     }
 
