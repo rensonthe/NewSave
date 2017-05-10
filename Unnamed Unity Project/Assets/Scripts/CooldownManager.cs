@@ -32,6 +32,7 @@ public class CooldownManager : MonoBehaviour {
 
     private float corruptionTimer;
     public float corruptionCharges;
+    private bool corruptionActive = false;
     private bool corruptionIsAllowed = false;
     public bool CorruptionIsAllowed { get { return corruptionIsAllowed; } }
 
@@ -45,28 +46,24 @@ public class CooldownManager : MonoBehaviour {
     void Start () {
         bulwarkTimer = bulwarkCooldown;
         orbLaunchTimer = orbLaunchCooldown;
-        corruptionTimer = PlayerController.Instance.corruptionDuration;
 	}
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(corruptionCharges);
-        Debug.Log(corruptionTimer);
         OrbLaunchCooldown();
-        CorruptionDuration();
+
+            CorruptionDuration();
+
+
         BulwarkCooldown();
-        if(PlayerController.Instance.currentCorruption == 100 && corruptionCharges == 0 && !PlayerController.Instance.isInCorruption)
+        if(PlayerController.Instance.CurrentCorruption == 100 && corruptionCharges == 0 && !PlayerController.Instance.isInCorruption)
         {
             corruptionCharges++;
         }
         if(corruptionCharges == 1)
         {
             corruptionIsAllowed = true;
-        }
-        if (PlayerController.Instance.isInCorruption)
-        {
-            PlayerController.Instance.currentCorruption = corruptionIconImage.fillAmount;
         }
     }
 
@@ -144,6 +141,7 @@ public class CooldownManager : MonoBehaviour {
     {
         if (corruptionIsAllowed)
         {
+            corruptionActive = true;
             corruptionIsAllowed = false;
             corruptionCharges--;
         }
@@ -151,14 +149,16 @@ public class CooldownManager : MonoBehaviour {
 
     public void CorruptionDuration()
     {
-        if (corruptionIsAllowed)
+        if (corruptionActive)
         {
             corruptionTimer += Time.deltaTime;
+            Debug.Log(corruptionTimer);
             HandleCooldown(corruptionIconImage, PlayerController.Instance.corruptionDuration - corruptionTimer, PlayerController.Instance.corruptionDuration);
             if (corruptionTimer >= PlayerController.Instance.corruptionDuration)
             {
+                corruptionActive = false;
                 corruptionIsAllowed = true;
-                corruptionTimer = 0;
+                corruptionTimer = 30;
             }
         }
     }

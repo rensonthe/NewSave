@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 public delegate void DeadEventHandler();
@@ -25,10 +26,12 @@ public class PlayerController : Character
     [Header("Stats")]
     [SerializeField]
     private Stat healthStat;
+    public Stat mentalityStat;
     public Stat XPStat;
     public Stat soulsStat;
     public Stat corruptionStat;
-    public float currentCorruption = 0;
+    private float currentCorruption = 0;
+    public float CurrentCorruption { get { return currentCorruption; } set { corruptionStat.CurrentVal = value; currentCorruption = value; } }
     private int currentXP;
     private int nextLevelXP = 100;
     private int level;
@@ -48,6 +51,7 @@ public class PlayerController : Character
     public ParticleSystem xpEffect;
     public ParticleSystem energyEffect;
     [Header("Assign")]
+    public Image corruptionColor;
     public GameObject skillPointLight;
     public Vector2 startPos;
     public TrailRenderer trailRenderer;
@@ -136,6 +140,7 @@ public class PlayerController : Character
         spriteRenderer = GetComponent<SpriteRenderer>();
         MyRigidBody = GetComponent<Rigidbody2D>();
         healthStat.Initialize();
+        mentalityStat.Initialize();
         soulsStat.Initialize();
         XPStat.Initialize();
         corruptionStat.Initialize();
@@ -150,11 +155,10 @@ public class PlayerController : Character
     void Update()
     {
         Debug.Log(isInCorruption);
+        Debug.Log(currentCorruption);
         if (!IsDead)
         {
             HandleInput();
-
-                corruptionStat.CurrentVal = currentCorruption;
 
             if (skillPoint > 0)
             {
@@ -165,6 +169,15 @@ public class PlayerController : Character
                 skillPointLight.SetActive(false);
             }
         }
+        if (!isInTransition)
+            return;
+
+
+        transition += isShowing ? Time.deltaTime * (1 / duration) : -Time.deltaTime * (1 / duration);
+        corruptionColor.color = Color.Lerp(new Color(1, 1, 1, 0), new Color(1, 1, 1 , 0.25f), transition);
+
+        if (transition > 1 || transition < 0)
+            isInTransition = false;
     }
 
     void FixedUpdate()
@@ -270,7 +283,8 @@ public class PlayerController : Character
             if (Input.GetKeyDown(KeyCode.L))
             {
                 GainXP(nextLevelXP);
-                currentCorruption = 100;
+                CurrentCorruption = 100;
+                mentalityStat.CurrentVal += 25;
             }
         }
     }
@@ -349,10 +363,25 @@ public class PlayerController : Character
         }
     }
 
+    private bool isInTransition;
+    private float transition;
+    private bool isShowing;
+    private float duration;
+
+    public void Fade(bool showing, float duration)
+    {
+        isShowing = showing;
+        isInTransition = true;
+        this.duration = duration;
+        transition = (isShowing) ? 0 : 1;
+    }
+
     public void Corruption()
     {
         if (!isInCorruption && CooldownManager.Instance.corruptionCharges == 1)
         {
+            corruptionColor.gameObject.SetActive(true);
+            StartCoroutine(FadeCheck());
             abilityTrig = true;
             MyAnimator.SetLayerWeight(2, 1);
             MyAnimator.SetLayerWeight(3, 1);
@@ -364,12 +393,21 @@ public class PlayerController : Character
         }
     }
 
+    IEnumerator FadeCheck()
+    {
+        Fade(true, 1.25f);
+        yield return new WaitForSeconds(corruptionDuration);
+        Fade(false, 2f);
+        StopCoroutine("FadeCheck");
+    }
+
     public void DeCorruption()
     {
+        corruptionColor.gameObject.SetActive(false);
         abilityTrig = false;
         trailRenderer.gameObject.SetActive(false);
         MyAnimator.SetTrigger("corruption_deform");
-        currentCorruption = 0;
+        CurrentCorruption = 0;
         isInCorruption = false;
     }
 
