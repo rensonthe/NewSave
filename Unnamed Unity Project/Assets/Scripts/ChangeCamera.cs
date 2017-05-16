@@ -5,6 +5,8 @@ public class ChangeCamera : MonoBehaviour {
 
     public CameraFollow cameraFollow;
     public Vector3 minCameraPos;
+    public float posXReset;
+    public bool xReset;
     public bool smoothChange;
     public float posY;
 
@@ -41,6 +43,10 @@ public class ChangeCamera : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
+            if(xReset == true)
+        {
+            cameraFollow.minCameraPos.x = posXReset;
+        }
             activated = false;
             if(smoothChange == true)
             {
