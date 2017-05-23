@@ -9,8 +9,11 @@ public class ChangeCamera : MonoBehaviour {
     public bool xReset;
     public bool smoothChange;
     public float posY;
+    public bool smoothChangeX;
+    public float posX;
 
     private bool activated = false;
+    private bool activatedX = false;
 
     void Update()
     {
@@ -29,6 +32,21 @@ public class ChangeCamera : MonoBehaviour {
                 cameraFollow.minCameraPos = minCameraPos;
             }
         }
+        if(activatedX == true)
+        {
+            if (smoothChangeX == true)
+            {
+                SmoothChangeX();
+                if (minCameraPos.x >= posX)
+                {
+                    activatedX = true;
+                }
+            }
+            else if (smoothChangeX == false)
+            {
+                cameraFollow.minCameraPos = minCameraPos;
+            }
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -36,6 +54,7 @@ public class ChangeCamera : MonoBehaviour {
         if(other.tag == "Player")
         {
             activated = true;
+            activatedX = false;
         }
     }
 
@@ -47,10 +66,16 @@ public class ChangeCamera : MonoBehaviour {
         {
             cameraFollow.minCameraPos.x = posXReset;
         }
+            activatedX = true;
             activated = false;
             if(smoothChange == true)
             {
                 minCameraPos.y -= cameraFollow.minCameraPos.y;
+                cameraFollow.minCameraPos = minCameraPos;
+            }
+            if (smoothChangeX == true)
+            {
+                minCameraPos.x -= cameraFollow.minCameraPos.x;
                 cameraFollow.minCameraPos = minCameraPos;
             }
         }
@@ -62,6 +87,15 @@ public class ChangeCamera : MonoBehaviour {
         if (minCameraPos.y <= posY)
         {
             minCameraPos.y += Time.deltaTime;
+        }
+    }
+
+    void SmoothChangeX()
+    {
+        cameraFollow.minCameraPos = minCameraPos;
+        if (minCameraPos.x <= posX)
+        {
+            minCameraPos.x += Time.deltaTime;
         }
     }
 }

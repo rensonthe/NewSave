@@ -1,9 +1,11 @@
 fileFormatVersion: 2
-guid: 3684a2a268096a74d89244862e9f957f
-timeCreated: 1494964071
+guid: 6bdf9d02460234f40bd18f164f3b5dd9
+timeCreated: 1495532934
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Untitled-2_0
+    21300002: Untitled-2_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,7 +32,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -38,7 +40,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -51,7 +53,33 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Untitled-2_0
+      rect:
+        serializedVersion: 2
+        x: 1713
+        y: 0
+        width: 1823
+        height: 995
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Untitled-2_1
+      rect:
+        serializedVersion: 2
+        x: 1092
+        y: 0
+        width: 621
+        height: 995
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
     outline: []
   spritePackingTag: 
   userData: 

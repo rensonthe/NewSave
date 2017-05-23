@@ -79,6 +79,7 @@ public class PlayerController : Character
     private Camera cam;
     private Vector3 mousePosition;
     public bool isInCorruption = false;
+    private InteractableObject interactableObject;
 
     [Header("Basic Attacks")]
     public bool LMB;
@@ -285,6 +286,13 @@ public class PlayerController : Character
                 GainXP(nextLevelXP);
                 CurrentCorruption = 100;
                 mentalityStat.CurrentVal += 25;
+            }
+            if(interactableObject != null)
+            {
+                if (Input.GetKeyDown(KeyCode.E) && StaticInteractableBehaviour.canInteract)
+                {
+                    interactableObject.Interact();
+                }
             }
         }
     }
@@ -511,6 +519,18 @@ public class PlayerController : Character
         {
             healthStat.CurrentVal -= 10;
             StartCoroutine(TakeDamage());
+        }
+        if(other.tag == "Interactable")
+        {
+            interactableObject = other.GetComponent<InteractableObject>();
+        }
+    }
+
+    public void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.tag == "Interactable")
+        {
+            interactableObject = null;
         }
     }
 
