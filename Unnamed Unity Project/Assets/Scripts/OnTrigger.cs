@@ -4,6 +4,8 @@ using Fungus;
 
 public class OnTrigger : MonoBehaviour {
 
+    public bool Clickable;
+    public string staticMessage;
     private string Message;
     public Flowchart flowchart;
     public PlayerController playerController;
@@ -33,5 +35,19 @@ public class OnTrigger : MonoBehaviour {
                 flowchart.SendFungusMessage(Message);
             }
         } 
+    }
+
+    void OnMouseDown()
+    {
+        if (Clickable)
+        {
+            if (flowchart.GetBooleanVariable("Triggered") == false)
+            {
+                playerController.moveSpeed = 0;
+                playerController.trig = true;
+
+                flowchart.SendFungusMessage(staticMessage);
+            }
+        }
     }
 }

@@ -5,15 +5,48 @@ public class FogOfWar : MonoBehaviour {
 
     public SpriteRenderer[] Sprites;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    private bool isInTransition;
+    private float transition;
+    private bool isShowing;
+    private float duration;
+
+    public void Fade(bool showing, float duration)
+    {
+        isShowing = showing;
+        isInTransition = true;
+        this.duration = duration;
+        transition = (isShowing) ? 0 : 1;
+    }
+
+    private void Update()
+    {
+        if (!isInTransition)
+            return;
+
+        for (int i = 0; i < Sprites.Length; i++)
+        {
+            Sprites[i].color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, transition);
+        }
+
+        transition += isShowing ? Time.deltaTime * (1 / duration) : -Time.deltaTime * (1 / duration);
+
+        if (transition > 1 || transition < 0)
+            isInTransition = false;
+    }
+
+    IEnumerator FadeCheckIn()
+    {
+        Fade(true, 1.25f);
+        StopCoroutine("FadeCheckIn");
+        yield return null;
+    }
+
+    IEnumerator FadeCheckOut()
+    {
+        Fade(false, 1.25f);
+        StopCoroutine("FadeCheckOut");
+        yield return null;
+    }
 
     void OnTriggerEnter2D(Collider2D collider)
     {
@@ -21,16 +54,19 @@ public class FogOfWar : MonoBehaviour {
         {
             foreach(SpriteRenderer s in Sprites)
             {
-                s.color = Color.white;
+                StartCoroutine("FadeCheckIn");
             }
         }
     }
 
     void OnTriggerExit2D(Collider2D collider)
     {
-        foreach (SpriteRenderer s in Sprites)
+        if (collider.tag == "Player")
         {
-            s.color = Color.black;
+            foreach (SpriteRenderer s in Sprites)
+            {
+                StartCoroutine("FadeCheckOut");
+            }
         }
     }
 }

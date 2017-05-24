@@ -29,9 +29,4 @@ public class InteractableObject : MonoBehaviour {
             collisionSpace.enabled = true;
         }
     }
-
-    public void OnMouseDown()
-    {
-        Debug.Log("hi");
-    }
 }
