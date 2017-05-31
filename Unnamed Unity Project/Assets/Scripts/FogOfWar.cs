@@ -4,6 +4,7 @@ using System.Collections;
 public class FogOfWar : MonoBehaviour {
 
     public SpriteRenderer[] Sprites;
+    public bool hasPlayer;
 
     private bool isInTransition;
     private float transition;
@@ -34,14 +35,14 @@ public class FogOfWar : MonoBehaviour {
             isInTransition = false;
     }
 
-    IEnumerator FadeCheckIn()
+    public IEnumerator FadeCheckIn()
     {
         Fade(true, 1.25f);
         StopCoroutine("FadeCheckIn");
         yield return null;
     }
 
-    IEnumerator FadeCheckOut()
+    public IEnumerator FadeCheckOut()
     {
         Fade(false, 1.25f);
         StopCoroutine("FadeCheckOut");
@@ -52,9 +53,10 @@ public class FogOfWar : MonoBehaviour {
     {
         if(collider.tag == "Player")
         {
+            hasPlayer = true;
             foreach(SpriteRenderer s in Sprites)
             {
-                StartCoroutine("FadeCheckIn");
+                //StartCoroutine("FadeCheckIn");
             }
         }
     }
@@ -63,9 +65,10 @@ public class FogOfWar : MonoBehaviour {
     {
         if (collider.tag == "Player")
         {
+            hasPlayer = false;
             foreach (SpriteRenderer s in Sprites)
             {
-                StartCoroutine("FadeCheckOut");
+                //StartCoroutine("FadeCheckOut");
             }
         }
     }

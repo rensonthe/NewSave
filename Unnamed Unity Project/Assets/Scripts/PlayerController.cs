@@ -22,7 +22,8 @@ public class PlayerController : Character
         }
     }
     public event DeadEventHandler Dead;
-
+    [Header("Mode")]
+    public bool Wraith;
     [Header("Stats")]
     [SerializeField]
     private Stat healthStat;
@@ -140,23 +141,25 @@ public class PlayerController : Character
         startPos = transform.position;
         spriteRenderer = GetComponent<SpriteRenderer>();
         MyRigidBody = GetComponent<Rigidbody2D>();
-        healthStat.Initialize();
-        mentalityStat.Initialize();
-        soulsStat.Initialize();
-        XPStat.Initialize();
-        corruptionStat.Initialize();
-        XPStat.CurrentVal = currentXP;
-        skills.Add("OrbBlast", new SkillPoints(1));
-        skills.Add("OrbJaunt", new SkillPoints(1, "OrbBlast"));
-        skills.Add("Bulwark", new SkillPoints(1, "OrbBlast"));
-        skills.Add("DoubleJump", new SkillPoints(1, "OrbBlast"));
+        if (Wraith)
+        {
+            healthStat.Initialize();
+            mentalityStat.Initialize();
+            soulsStat.Initialize();
+            XPStat.Initialize();
+            corruptionStat.Initialize();
+            XPStat.CurrentVal = currentXP;
+            skills.Add("OrbBlast", new SkillPoints(1));
+            skills.Add("OrbJaunt", new SkillPoints(1, "OrbBlast"));
+            skills.Add("Bulwark", new SkillPoints(1, "OrbBlast"));
+            skills.Add("DoubleJump", new SkillPoints(1, "OrbBlast"));
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(isInCorruption);
-        Debug.Log(currentCorruption);
+        
         if (!IsDead)
         {
             HandleInput();
@@ -241,52 +244,55 @@ public class PlayerController : Character
     {
         if (trig == false)
         {
-            if (Input.GetKeyDown(KeyCode.V) && LMB == true)
+            if (Wraith)
             {
-                Corruption();
-            }
-            if (Input.GetMouseButtonDown(0) && LMB == true)
-            {
-                MyAnimator.SetTrigger("attack");
-            }
-            if (abilityTrig == false)
-            {
-                if (Input.GetMouseButtonDown(1) && RMB == true)
+                if (Input.GetKeyDown(KeyCode.V) && LMB == true)
                 {
-                    OrbAttack();
+                    Corruption();
                 }
-                if (Input.GetKeyDown(KeyCode.Q) && OrbJaunt == true)
+                if (Input.GetMouseButtonDown(0) && LMB == true)
                 {
-                    if (Orb != null)
+                    MyAnimator.SetTrigger("attack");
+                }
+                if (abilityTrig == false)
+                {
+                    if (Input.GetMouseButtonDown(1) && RMB == true)
                     {
-                        transform.position = FindObjectOfType<PlayerOrb>().transform.position;
+                        OrbAttack();
+                    }
+                    if (Input.GetKeyDown(KeyCode.Q) && OrbJaunt == true)
+                    {
+                        if (Orb != null)
+                        {
+                            transform.position = FindObjectOfType<PlayerOrb>().transform.position;
+                        }
                     }
                 }
-            }
 
-            if (Input.GetKeyDown(KeyCode.Space) && !IsFalling)
-            {
-                MyAnimator.SetTrigger("jump");
-            }
-            if (Input.GetKeyDown(KeyCode.Space) && canDoubleJump == true && !OnGround && soulsStat.CurrentVal >= doubleJumpVal)
-            {
-                soulsStat.CurrentVal -= doubleJumpVal;
-                MyAnimator.SetTrigger("doublejump");
-                MyRigidBody.velocity = new Vector2(MyRigidBody.velocity.x, 6.5f);
-                vaultingCircle.SetActive(true);
-                vaultingCircle.GetComponent<Animator>().SetTrigger("player_double_jump");
-                canDoubleJump = false;
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha1) && Bulwark == true)
-            {
-                CooldownManager.Instance.Bulwark();
-            }
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                GainXP(nextLevelXP);
-                CurrentCorruption = 100;
-                mentalityStat.CurrentVal += 25;
-            }
+                if (Input.GetKeyDown(KeyCode.Space) && !IsFalling)
+                {
+                    MyAnimator.SetTrigger("jump");
+                }
+                if (Input.GetKeyDown(KeyCode.Space) && canDoubleJump == true && !OnGround && soulsStat.CurrentVal >= doubleJumpVal)
+                {
+                    soulsStat.CurrentVal -= doubleJumpVal;
+                    MyAnimator.SetTrigger("doublejump");
+                    MyRigidBody.velocity = new Vector2(MyRigidBody.velocity.x, 6.5f);
+                    vaultingCircle.SetActive(true);
+                    vaultingCircle.GetComponent<Animator>().SetTrigger("player_double_jump");
+                    canDoubleJump = false;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha1) && Bulwark == true)
+                {
+                    CooldownManager.Instance.Bulwark();
+                }
+                if (Input.GetKeyDown(KeyCode.L))
+                {
+                    GainXP(nextLevelXP);
+                    CurrentCorruption = 100;
+                    mentalityStat.CurrentVal += 25;
+                }
+            }            
             if(interactableObject != null)
             {
                 if (Input.GetKeyDown(KeyCode.E) && StaticInteractableBehaviour.canInteract)
