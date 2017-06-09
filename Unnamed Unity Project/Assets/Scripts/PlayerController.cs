@@ -81,6 +81,7 @@ public class PlayerController : Character
     private Vector3 mousePosition;
     public bool isInCorruption = false;
     private InteractableObject interactableObject;
+    private bool canInteract = true;
 
     [Header("Basic Attacks")]
     public bool LMB;
@@ -163,14 +164,16 @@ public class PlayerController : Character
         if (!IsDead)
         {
             HandleInput();
-
-            if (skillPoint > 0)
+            if (Wraith)
             {
-                skillPointLight.SetActive(true);
-            }
-            else
-            {
-                skillPointLight.SetActive(false);
+                if (skillPoint > 0)
+                {
+                    skillPointLight.SetActive(true);
+                }
+                else
+                {
+                    skillPointLight.SetActive(false);
+                }
             }
         }
         if (!isInTransition)
@@ -295,11 +298,19 @@ public class PlayerController : Character
             }            
             if(interactableObject != null)
             {
-                if (Input.GetKeyDown(KeyCode.E) && StaticInteractableBehaviour.canInteract)
-                {
-                    interactableObject.Interact();
-                }
+                StartCoroutine(Interact());
             }
+        }
+    }
+
+    IEnumerator Interact()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && StaticInteractableBehaviour.canInteract && canInteract)
+        {
+            canInteract = false;
+            interactableObject.Interact();
+            yield return new WaitForSeconds(0.5f);
+            canInteract = true;
         }
     }
 

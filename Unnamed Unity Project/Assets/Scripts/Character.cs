@@ -13,6 +13,8 @@ public abstract class Character : MonoBehaviour {
 
     public int health;
 
+    public Transform speechBubble;
+
     public EdgeCollider2D []swordCollider;
 
     private int colliderIndex;
@@ -55,8 +57,12 @@ public abstract class Character : MonoBehaviour {
 
     public void ChangeDirection()
     {
+        Vector3 speechBubblePos = speechBubble.position;
+        speechBubble.SetParent(null);
         facingRight = !facingRight;
         transform.localScale = new Vector3(transform.localScale.x * -1, 1, 1);
+        speechBubble.SetParent(transform);
+        speechBubble.position = speechBubblePos;
     }
 
     public virtual void SpawnOrb(int value)
