@@ -243,6 +243,11 @@ public class PlayerController : Character
         MyAnimator.SetFloat("speed", Mathf.Abs(horizontal));
     }
 
+    public void FootstepsAudio()
+    {
+        AudioManager.instance.PlaySound("FootstepTest", transform.position);
+    }
+
     public void HandleInput()
     {
         if (trig == false)
