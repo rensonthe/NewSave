@@ -28,22 +28,25 @@ public class LayerBehaviour : StateMachineBehaviour {
     //OnStateUpdate is called before OnStateUpdate is called on any state inside this state machine
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (animator.GetLayerWeight(1) == 0 && animator.gameObject.layer != 10 && !player.IsFalling)
+        if (PlayerController.Instance.Wraith)
         {
-            animator.gameObject.layer = 15;
-        }
-        if(animator.gameObject.layer == 11 || player.IsJumping)
-        {
-            if(boxCollider.size != jumpSize && boxCollider.offset != jumpeOffSet)
+            if (animator.GetLayerWeight(1) == 0 && animator.gameObject.layer != 10 && !player.IsFalling)
             {
-                boxCollider.size = jumpSize;
-                boxCollider.offset = jumpeOffSet;
+                animator.gameObject.layer = 15;
             }
-        }
-        if (animator.gameObject.layer == 15|| animator.gameObject.layer == 10)
-        {
-            boxCollider.size = size;
-            boxCollider.offset = offset;
+            if (animator.gameObject.layer == 11 || player.IsJumping)
+            {
+                if (boxCollider.size != jumpSize && boxCollider.offset != jumpeOffSet)
+                {
+                    boxCollider.size = jumpSize;
+                    boxCollider.offset = jumpeOffSet;
+                }
+            }
+            if (animator.gameObject.layer == 15 || animator.gameObject.layer == 10)
+            {
+                boxCollider.size = size;
+                boxCollider.offset = offset;
+            }
         }
     }
 

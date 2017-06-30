@@ -5,6 +5,7 @@ public class ChangeCamera : MonoBehaviour {
 
     public CameraFollow cameraFollow;
     public Vector3 minCameraPos;
+    public Vector3 maxCameraPos;
     public float posXReset;
     public bool xReset;
     public bool smoothChange;
@@ -30,6 +31,7 @@ public class ChangeCamera : MonoBehaviour {
             else if (smoothChange == false)
             {
                 cameraFollow.minCameraPos = minCameraPos;
+                cameraFollow.maxCameraPos = maxCameraPos;
             }
         }
         if(activatedX == true)
@@ -45,6 +47,7 @@ public class ChangeCamera : MonoBehaviour {
             else if (smoothChangeX == false)
             {
                 cameraFollow.minCameraPos = minCameraPos;
+                cameraFollow.maxCameraPos = maxCameraPos;
             }
         }
     }

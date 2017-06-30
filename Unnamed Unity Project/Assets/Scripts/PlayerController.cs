@@ -245,7 +245,7 @@ public class PlayerController : Character
 
     public void FootstepsAudio()
     {
-        AudioManager.instance.PlaySound("FootstepTest", transform.position);
+        AudioManager.instance.PlaySound2D("FootstepTest");
     }
 
     public void HandleInput()
@@ -314,7 +314,7 @@ public class PlayerController : Character
         {
             canInteract = false;
             interactableObject.Interact();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
             canInteract = true;
         }
     }

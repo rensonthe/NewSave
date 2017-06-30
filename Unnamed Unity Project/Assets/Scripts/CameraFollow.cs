@@ -29,6 +29,12 @@ public class CameraFollow : MonoBehaviour {
     private bool isShowing;
     private float duration;
 
+    private Vector3 startPos;
+    private Vector3 endPosition;
+    public bool isLerping = false;
+    private float startTime;
+    private float length;
+
     public void Fade(bool showing, float duration)
     {
         isShowing = showing;
@@ -39,6 +45,12 @@ public class CameraFollow : MonoBehaviour {
 
     private void Update()
     {
+        Debug.Log(isLerping);
+        if (isLerping)
+        {
+            LerpToPosition();
+        }
+
         if (!isInTransition)
             return;
 
@@ -68,20 +80,67 @@ public class CameraFollow : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (!panning)
+        if (!isLerping)
         {
-            FollowPlayer();
+            if (!panning)
+            {
+                FollowPlayer();
+                Debug.Log("run");
+            }
+            else
+            {
+                float step = speed * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+            }
+            if (_keyPressed == true)
+            {
+                panning = false;
+                PlayerController.Instance.SetActive();
+            }
         }
-        else
+    }
+
+    //public IEnumerator LerpToPosition(Vector3 endPosition)
+    //{
+    //    if(isLerping == false)
+    //    {
+    //        isLerping = true;
+    //        float startTime = Time.time;
+    //        Vector3 startPos = transform.position;
+    //        float length = Vector3.Distance(transform.position, endPosition);
+    //        float discover = (Time.time - startTime) * 5;
+    //        float journey = discover / length;
+    //        while (journey < 1)
+    //        {
+    //            discover = (Time.time - startTime) * 5;
+    //            journey = discover / length;
+    //            transform.position = Vector3.Lerp(startPos, endPosition, journey);
+    //        }
+    //        isLerping = false;
+    //        yield return null;
+    //    }
+    //}
+
+    void LerpToPosition()
+    {
+        float discover = (Time.time - startTime) * 5;
+        float journey = discover / length;
+        transform.position = Vector3.Lerp(startPos, endPosition, journey);
+        if(journey >= 1)
         {
-            float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+            isLerping = false;
         }
-        if (_keyPressed == true)
-        {
-            panning = false;
-            PlayerController.Instance.SetActive();
-        }
+    }
+
+    public void StartLerp(Vector3 endPosition, Vector3 minPos, Vector3 maxPos)
+    {
+        minCameraPos = minPos;
+        maxCameraPos = maxPos;
+        isLerping = true;
+        startPos = transform.position;
+        this.endPosition = endPosition;
+        startTime = Time.time;
+        length = Vector3.Distance(startPos, endPosition);
     }
 
     private void FollowPlayer()

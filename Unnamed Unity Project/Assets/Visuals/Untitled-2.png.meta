@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 4c699cbf53fe0d245837f9969a2787d9
-timeCreated: 1497806553
+guid: 33121d3ccdc2d5549b83a1ef3c22eaa7
+timeCreated: 1498797877
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Untitled-2_0
-    21300002: Untitled-2_1
+    21300000: Untitled-3_0
+    21300002: Untitled-3_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -55,7 +55,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Untitled-2_0
+      name: Untitled-3_0
       rect:
         serializedVersion: 2
         x: 1713
@@ -68,7 +68,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Untitled-2_1
+      name: Untitled-3_1
       rect:
         serializedVersion: 2
         x: 1092
