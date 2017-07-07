@@ -45,7 +45,6 @@ public class CameraFollow : MonoBehaviour {
 
     private void Update()
     {
-        Debug.Log(isLerping);
         if (isLerping)
         {
             LerpToPosition();
@@ -73,6 +72,26 @@ public class CameraFollow : MonoBehaviour {
         StopCoroutine("FadeCheck");
     }
 
+    void LerpToPosition()
+    {
+        float discover = (Time.time - startTime) * 5;
+        float journey = discover / length;
+        transform.position = Vector3.Lerp(startPos, endPosition, journey);
+        if (journey >= 1)
+        {
+            isLerping = false;
+        }
+    }
+
+    public void StartLerp(Vector3 endPosition)
+    {
+        isLerping = true;
+        startPos = transform.position;
+        this.endPosition = endPosition;
+        startTime = Time.time;
+        length = Vector3.Distance(startPos, endPosition);
+    }
+
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -80,67 +99,20 @@ public class CameraFollow : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (!isLerping)
+        if (!panning)
         {
-            if (!panning)
-            {
-                FollowPlayer();
-                Debug.Log("run");
-            }
-            else
-            {
-                float step = speed * Time.deltaTime;
-                transform.position = Vector3.MoveTowards(transform.position, target.position, step);
-            }
-            if (_keyPressed == true)
-            {
-                panning = false;
-                PlayerController.Instance.SetActive();
-            }
+            FollowPlayer();
         }
-    }
-
-    //public IEnumerator LerpToPosition(Vector3 endPosition)
-    //{
-    //    if(isLerping == false)
-    //    {
-    //        isLerping = true;
-    //        float startTime = Time.time;
-    //        Vector3 startPos = transform.position;
-    //        float length = Vector3.Distance(transform.position, endPosition);
-    //        float discover = (Time.time - startTime) * 5;
-    //        float journey = discover / length;
-    //        while (journey < 1)
-    //        {
-    //            discover = (Time.time - startTime) * 5;
-    //            journey = discover / length;
-    //            transform.position = Vector3.Lerp(startPos, endPosition, journey);
-    //        }
-    //        isLerping = false;
-    //        yield return null;
-    //    }
-    //}
-
-    void LerpToPosition()
-    {
-        float discover = (Time.time - startTime) * 5;
-        float journey = discover / length;
-        transform.position = Vector3.Lerp(startPos, endPosition, journey);
-        if(journey >= 1)
+        else
         {
-            isLerping = false;
+            float step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, target.position, step);
         }
-    }
-
-    public void StartLerp(Vector3 endPosition, Vector3 minPos, Vector3 maxPos)
-    {
-        minCameraPos = minPos;
-        maxCameraPos = maxPos;
-        isLerping = true;
-        startPos = transform.position;
-        this.endPosition = endPosition;
-        startTime = Time.time;
-        length = Vector3.Distance(startPos, endPosition);
+        if (_keyPressed == true)
+        {
+            panning = false;
+            PlayerController.Instance.SetActive();
+        }
     }
 
     private void FollowPlayer()

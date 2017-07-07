@@ -71,7 +71,6 @@ public class SpeechBubble : MonoBehaviour {
                     if(item == ' ')
                     {
                         words++;
-                        Debug.Log(words);
                     }
                     if(words == 6)
                     {

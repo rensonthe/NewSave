@@ -152,7 +152,6 @@ public class CooldownManager : MonoBehaviour {
         if (corruptionActive)
         {
             corruptionTimer += Time.deltaTime;
-            Debug.Log(corruptionTimer);
             HandleCooldown(corruptionIconImage, PlayerController.Instance.corruptionDuration - corruptionTimer, PlayerController.Instance.corruptionDuration);
             if (corruptionTimer >= PlayerController.Instance.corruptionDuration)
             {

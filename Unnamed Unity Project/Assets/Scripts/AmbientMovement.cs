@@ -16,6 +16,7 @@ public class AmbientMovement : MonoBehaviour {
     public GameObject prefab;
 
     private float speed;
+    private bool spawnable = true;
 
     // Use this for initialization
     void Start()
@@ -33,12 +34,15 @@ public class AmbientMovement : MonoBehaviour {
 
     IEnumerator SpawnCloud()
     {
-        while (true)
+        if (spawnable)
         {
-            Vector3 position = new Vector3(posA.x, Random.Range(3.75f, -1.5f), 0);
-            GameObject cloud = Instantiate(prefab, position, Quaternion.identity) as GameObject;
-            cloud.GetComponent<Cloud>().speed = Random.Range(1, 6);
-            yield return new WaitForSeconds(Random.Range(3f,7f));
+            while (true)
+            {
+                Vector3 position = new Vector3(posA.x, Random.Range(3.75f, -1.5f), 0);
+                GameObject cloud = Instantiate(prefab, position, Quaternion.identity) as GameObject;
+                cloud.GetComponent<Cloud>().speed = Random.Range(1, 6);
+                yield return new WaitForSeconds(Random.Range(3f, 7f));
+            }
         }
     }
 }

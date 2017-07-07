@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ChangeCamera : MonoBehaviour {
+public class ChangeCamera : MonoBehaviour
+{
 
     public CameraFollow cameraFollow;
     public Vector3 minCameraPos;
-    public Vector3 maxCameraPos;
     public float posXReset;
     public bool xReset;
     public bool smoothChange;
@@ -18,7 +18,7 @@ public class ChangeCamera : MonoBehaviour {
 
     void Update()
     {
-        if(activated == true)
+        if (activated == true)
         {
             if (smoothChange == true)
             {
@@ -31,10 +31,9 @@ public class ChangeCamera : MonoBehaviour {
             else if (smoothChange == false)
             {
                 cameraFollow.minCameraPos = minCameraPos;
-                cameraFollow.maxCameraPos = maxCameraPos;
             }
         }
-        if(activatedX == true)
+        if (activatedX == true)
         {
             if (smoothChangeX == true)
             {
@@ -47,14 +46,13 @@ public class ChangeCamera : MonoBehaviour {
             else if (smoothChangeX == false)
             {
                 cameraFollow.minCameraPos = minCameraPos;
-                cameraFollow.maxCameraPos = maxCameraPos;
             }
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "Player")
+        if (other.tag == "Player")
         {
             activated = true;
             activatedX = false;
@@ -65,13 +63,13 @@ public class ChangeCamera : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
-            if(xReset == true)
-        {
-            cameraFollow.minCameraPos.x = posXReset;
-        }
+            if (xReset == true)
+            {
+                cameraFollow.minCameraPos.x = posXReset;
+            }
             activatedX = true;
             activated = false;
-            if(smoothChange == true)
+            if (smoothChange == true)
             {
                 minCameraPos.y -= cameraFollow.minCameraPos.y;
                 cameraFollow.minCameraPos = minCameraPos;
