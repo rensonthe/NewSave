@@ -4,13 +4,12 @@ using System.Collections;
 [RequireComponent(typeof(Controller2D))]
 public class Player : MonoBehaviour
 {
-
     public float maxJumpHeight = 4;
     public float minJumpHeight = 1;
     public float timeToJumpApex = .4f;
     float accelerationTimeAirborne = .2f;
     float accelerationTimeGrounded = .1f;
-    float moveSpeed = 6;
+    float moveSpeed = 3;
 
     public Vector2 wallJumpClimb;
     public Vector2 wallJumpOff;
@@ -23,7 +22,8 @@ public class Player : MonoBehaviour
     float gravity;
     float maxJumpVelocity;
     float minJumpVelocity;
-    Vector3 velocity;
+    [HideInInspector]
+    public Vector3 velocity;
     float velocityXSmoothing;
 
     Controller2D controller;
@@ -102,6 +102,11 @@ public class Player : MonoBehaviour
                 velocity.y = maxJumpVelocity;
             }
         }
+    }
+
+    public void DoubleJump()
+    {
+        velocity.y = maxJumpVelocity;
     }
 
     public void OnJumpInputUp()

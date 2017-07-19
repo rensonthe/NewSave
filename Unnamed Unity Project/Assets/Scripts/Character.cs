@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public abstract class Character : MonoBehaviour {
 
+    SpriteRenderer spriteRenderer;
+
     [Header("Character")]
     public GameObject Orb;
 
@@ -44,6 +46,7 @@ public abstract class Character : MonoBehaviour {
     public virtual void Start()
     {
         facingRight = true;
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         MyAnimator = GetComponent<Animator>();
     }
@@ -57,21 +60,39 @@ public abstract class Character : MonoBehaviour {
 
     public abstract void Death();
 
-    public void ChangeDirection()
+    public void ChangeDirectionLeft()
     {
         if (isSpeech)
         {
             Vector3 speechBubblePos = speechBubble.position;
             speechBubble.SetParent(null);
             facingRight = !facingRight;
-            transform.localScale = new Vector3(transform.localScale.x * -1, 1, 1);
+            spriteRenderer.flipX = true;
             speechBubble.SetParent(transform);
             speechBubble.position = speechBubblePos;
         }
         else
         {
             facingRight = !facingRight;
-            transform.localScale = new Vector3(transform.localScale.x * -1, 1, 1);
+            spriteRenderer.flipX = true;
+        }
+    }
+
+    public void ChangeDirectionRight()
+    {
+        if (isSpeech)
+        {
+            Vector3 speechBubblePos = speechBubble.position;
+            speechBubble.SetParent(null);
+            facingRight = !facingRight;
+            spriteRenderer.flipX = false;
+            speechBubble.SetParent(transform);
+            speechBubble.position = speechBubblePos;
+        }
+        else
+        {
+            facingRight = !facingRight;
+            spriteRenderer.flipX = false;
         }
     }
 

@@ -137,9 +137,13 @@ public class Enemy : Character {
         {
             float xDir = Target.transform.position.x - transform.position.x;
 
-            if (xDir > 1 && facingRight || xDir < -1 && !facingRight)
+            if (xDir > 1 && facingRight)
             {
-                ChangeDirection();
+                ChangeDirectionRight();
+            }
+            if (xDir < -1 && !facingRight)
+            {
+                ChangeDirectionLeft();
             }
         }
     }
@@ -168,7 +172,14 @@ public class Enemy : Character {
             }
             else if (currentState is PatrolState)
             {
-                ChangeDirection();
+                if ((!facingRight && !Attack))
+                {
+                    ChangeDirectionRight();
+                }
+                if (facingRight && !Attack)
+                {
+                    ChangeDirectionLeft();
+                }
             }
         }
     }

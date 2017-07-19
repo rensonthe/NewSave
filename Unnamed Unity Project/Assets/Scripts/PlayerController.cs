@@ -104,7 +104,6 @@ public class PlayerController : Character
     public float corruptionDuration = 30f;
     public GameObject vaultingCircle;
 
-    public Rigidbody2D MyRigidBody { get; set; }
     public bool Jump { get; set; }
     public bool OnGround { get; set; }
     public override bool IsDead
@@ -123,25 +122,28 @@ public class PlayerController : Character
     {
         get
         {
-            return MyRigidBody.velocity.y < 0;
+            return player.velocity.y < 0;
         }
     }
     public bool IsJumping
     {
         get
         {
-            return MyRigidBody.velocity.y > 0;
+            return player.velocity.y > 0;
         }
     }
+
+    [HideInInspector]
+    public Player player;
 
     // Use this for initialization
     public override void Start()
     {
+        player = GetComponent<Player>();
         base.Start();
         trailRenderer.sortingOrder = 2;
         startPos = transform.position;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        MyRigidBody = GetComponent<Rigidbody2D>();
         if (Wraith)
         {
             healthStat.Initialize();
@@ -233,11 +235,8 @@ public class PlayerController : Character
         }
         if (!Attack && (OnGround || airControl))
         {
-            MyRigidBody.velocity = new Vector2(horizontal * moveSpeed, MyRigidBody.velocity.y);
-        }
-        if (Jump && MyRigidBody.velocity.y == 0)
-        {
-            MyRigidBody.AddForce(new Vector2(0, jumpForce));
+            Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            player.SetDirectionalInput(directionalInput);
         }
 
         MyAnimator.SetFloat("speed", Mathf.Abs(horizontal));
@@ -276,16 +275,16 @@ public class PlayerController : Character
                         }
                     }
                 }
-
-                if (Input.GetKeyDown(KeyCode.Space) && !IsFalling)
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
                     MyAnimator.SetTrigger("jump");
+                    player.OnJumpInputDown();
                 }
                 if (Input.GetKeyDown(KeyCode.Space) && canDoubleJump == true && !OnGround && soulsStat.CurrentVal >= doubleJumpVal)
                 {
                     soulsStat.CurrentVal -= doubleJumpVal;
                     MyAnimator.SetTrigger("doublejump");
-                    MyRigidBody.velocity = new Vector2(MyRigidBody.velocity.x, 6.5f);
+                    player.DoubleJump();
                     vaultingCircle.SetActive(true);
                     vaultingCircle.GetComponent<Animator>().SetTrigger("player_double_jump");
                     canDoubleJump = false;
@@ -310,7 +309,7 @@ public class PlayerController : Character
 
     IEnumerator Interact()
     {
-        if (Input.GetKeyDown(KeyCode.E) && StaticInteractableBehaviour.canInteract && canInteract)
+        if (Input.GetKeyDown(KeyCode.E) && canInteract)
         {
             canInteract = false;
             interactableObject.Interact();
@@ -321,31 +320,49 @@ public class PlayerController : Character
 
     public void Lunge()
     {
-        if (facingRight)
-        {
-            MyRigidBody.AddForce(transform.right * 50);
-        }
-        if (!facingRight)
-        {
-            MyRigidBody.AddForce(-transform.right * 50);
-        }
+        //if (facingRight)
+        //{
+        //    MyRigidBody.AddForce(transform.right * 50);
+        //}
+        //if (!facingRight)
+        //{
+        //    MyRigidBody.AddForce(-transform.right * 50);
+        //}
 
     }
 
     void Flip(float horizontal)
     {
-        mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        horizontal = mousePosition.x - transform.position.x;
-        if ((horizontal > 0 && !facingRight && !Attack) || (horizontal < 0 && facingRight && !Attack))
+        //mousePosition = Input.mousePosition;
+        //mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        //horizontal = mousePosition.x - transform.position.x;
+        if (!Wraith)
         {
-            ChangeDirection();
+            if ((horizontal > 0 && !facingRight && !Attack))
+            {
+                ChangeDirectionRight();
+            }
+            if (horizontal < 0 && facingRight && !Attack)
+            {
+                ChangeDirectionLeft();
+            }
+        }
+        else if (Wraith)
+        {
+            if ((horizontal > 0 && !facingRight && !Attack))
+            {
+                ChangeDirectionLeft();
+            }
+            if (horizontal < 0 && facingRight && !Attack)
+            {
+                ChangeDirectionRight();
+            }
         }
     }
 
     private bool IsGrounded()
     {
-        if (MyRigidBody.velocity.y <= 0)
+        if (player.velocity.y <= 0)
         {
             foreach (Transform point in groundPoints)
             {
@@ -559,7 +576,7 @@ public class PlayerController : Character
     public override void Death()
     {
         StartCoroutine("Checkpoint");
-        MyRigidBody.velocity = Vector2.zero;
+        player.velocity = Vector2.zero;
 
         if (!isCreated)
         {
