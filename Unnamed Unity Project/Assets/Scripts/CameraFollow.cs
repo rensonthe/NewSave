@@ -74,7 +74,7 @@ public class CameraFollow : MonoBehaviour {
 
     void LerpToPosition()
     {
-        float discover = (Time.time - startTime) * 7.5f;
+        float discover = (Time.time - startTime) * 5f;
         float journey = discover / length;
         transform.position = Vector3.Lerp(startPos, endPosition, journey);
         if (journey >= 1)
