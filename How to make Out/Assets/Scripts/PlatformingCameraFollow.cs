@@ -109,5 +109,4 @@ public class PlatformingCameraFollow : MonoBehaviour {
             velocity = new Vector2(shiftX, shiftY);
         }
     }
-
 }
