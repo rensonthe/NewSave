@@ -52,6 +52,7 @@ public class CameraShake : MonoBehaviour
 
     public IEnumerator FadeCheckIn()
     {
+        fadeImage.gameObject.SetActive(false);
         Fade(true, 0.1f);
         StopCoroutine("FadeCheckIn");
         yield return null;
@@ -59,6 +60,7 @@ public class CameraShake : MonoBehaviour
 
     public IEnumerator FadeCheckOut()
     {
+        fadeImage.gameObject.SetActive(true);
         Fade(false, 2f);
         StopCoroutine("FadeCheckOut");
         yield return null;

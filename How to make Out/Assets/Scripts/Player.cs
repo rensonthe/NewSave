@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Controller2D))]
-public class Player : MonoBehaviour
+public class Player : Character
 {
     private static Player instance;
     public static Player Instance
@@ -34,7 +34,6 @@ public class Player : MonoBehaviour
     public float timeToJumpApex = .4f;
     float accelerationTimeAirborne = .2f;
     float accelerationTimeGrounded = .1f;
-    public float moveSpeed = 3;
 
     public Vector2 wallJumpClimb;
     public Vector2 wallJumpOff;
@@ -61,8 +60,9 @@ public class Player : MonoBehaviour
     private bool canRegen;
     private float regenTimer;
 
-    void Start()
+    public override void Start()
     {
+        base.Start();
         healthStat.Initialize();
         staminaStat.Initialize();
         controller = GetComponent<Controller2D>();
@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
         controller.Move(velocity * Time.deltaTime, directionalInput);
         regenTimer += Time.deltaTime;
 
-        if (regenTimer >= 5 && staminaStat.CurrentVal != staminaStat.MaxVal)
+        if (regenTimer >= 1.5f && staminaStat.CurrentVal != staminaStat.MaxVal)
         {
             canRegen = true;
             regenTimer = 0;
@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
         {
             if (staminaStat.CurrentVal != staminaStat.MaxVal)
             {
-                staminaStat.CurrentVal += Time.deltaTime * 2.5f;
+                staminaStat.CurrentVal += Time.deltaTime * 4.5f;
             }
             else
             {
@@ -132,7 +132,7 @@ public class Player : MonoBehaviour
 
     public void OnJumpInputDown()
     {
-        if (!trig)
+        if (!trig && !noClimb)
         {
             if(staminaStat.CurrentVal != 0)
             {

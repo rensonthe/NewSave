@@ -6,7 +6,7 @@ public class NoClimb : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.tag == "Player")
+        if(other.tag == "Player")
         {
             Player.Instance.noClimb = true;
         }
@@ -14,7 +14,7 @@ public class NoClimb : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.tag == "Player")
         {
             Player.Instance.noClimb = false;
         }
