@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,8 +41,31 @@ public class Enemy : Character {
         return facingRight ? Vector2.right : Vector2.left;
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    public override void OnTriggerEnter2D(Collider2D other)
     {
+        base.OnTriggerEnter2D(other);
         currentState.OnTriggerEnter(other);
+    }
+
+    public override IEnumerator TakeDamage()
+    {
+        health -= 10;
+        if (!IsDead)
+        {
+            MyAnimator.SetTrigger("damage");
+        }
+        else
+        {
+            MyAnimator.SetTrigger("die");
+            yield return null;
+        }
+    }
+
+    public override bool IsDead
+    {
+        get
+        {
+            return health <= 0;
+        }
     }
 }

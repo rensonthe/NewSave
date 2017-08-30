@@ -51,6 +51,9 @@ public class Player : Character
     float velocityXSmoothing;
 
     Controller2D controller;
+    private Animator myAnimator;
+    [SerializeField]
+    private GameObject fireballPrefab;
 
     Vector2 directionalInput;
     bool wallSliding;
@@ -62,6 +65,7 @@ public class Player : Character
 
     public override void Start()
     {
+        myAnimator = GetComponent<Animator>();
         base.Start();
         healthStat.Initialize();
         staminaStat.Initialize();
@@ -75,6 +79,7 @@ public class Player : Character
 
     void Update()
     {
+        HandleInput();
         CalculateVelocity();
         controller.Move(velocity * Time.deltaTime, directionalInput);
         regenTimer += Time.deltaTime;
@@ -110,6 +115,23 @@ public class Player : Character
                     velocity.y = 0;
                 }
             }
+        }
+    }
+
+    private void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            myAnimator.SetTrigger("fireball");
+            Fireball();
+        }
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            facingRight = false;
+        }
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            facingRight = true;
         }
     }
 
@@ -244,5 +266,32 @@ public class Player : Character
         float targetVelocityX = directionalInput.x * moveSpeed;
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
         velocity.y += gravity * Time.deltaTime;
+    }
+
+    public override IEnumerator TakeDamage()
+    {
+        yield return null;
+    }
+
+    public override bool IsDead
+    {
+        get
+        {
+            return health <= 0;
+        }
+    }
+
+    public void Fireball()
+    {
+        if (facingRight)
+        {
+            GameObject tmp = (GameObject)Instantiate(fireballPrefab, transform.position, Quaternion.identity);
+            tmp.GetComponent<Fireball>().Initialize(Vector2.right);
+        }
+        else
+        {
+            GameObject tmp = (GameObject)Instantiate(fireballPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, -180)));
+            tmp.GetComponent<Fireball>().Initialize(Vector2.left);
+        }
     }
 }

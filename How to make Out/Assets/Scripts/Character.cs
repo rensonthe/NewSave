@@ -8,6 +8,13 @@ public abstract class Character : MonoBehaviour {
 
     public float moveSpeed = 3;
 
+    [SerializeField]
+    protected int health;
+
+    public abstract bool IsDead { get; }
+
+    public Animator MyAnimator { get; private set; }
+
     protected bool facingRight;
 
     // Use this for initialization
@@ -26,5 +33,15 @@ public abstract class Character : MonoBehaviour {
     {
             facingRight = !facingRight;
             spriteRenderer.flipX = true;
+    }
+
+    public abstract IEnumerator TakeDamage();
+
+    public virtual void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.tag == "Damage")
+        {
+            StartCoroutine(TakeDamage());
+        }
     }
 }
