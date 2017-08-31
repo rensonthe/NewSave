@@ -1,0 +1,30 @@
+Initialize engine version: 2017.1.0f3 (472613c02cf7)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GT 730 (ID=0xf02)
+    Vendor:   NVIDIA
+    VRAM:     2000 MB
+    Driver:   21.21.13.7878
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\UnityEngine.Timeline.dll (this message is harmless)
+Loading C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\UnityEngine.Timeline.dll into Unity Child Domain
+Platform assembly: C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\System.Core.dll (this message is harmless)
+- Completed reload, in  0.024 seconds
+OnLevelWasLoaded was found on MusicManager
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+ 
+(Filename:  Line: 380)
+
+<RI> Initializing input.
+<RI> Input initialized.

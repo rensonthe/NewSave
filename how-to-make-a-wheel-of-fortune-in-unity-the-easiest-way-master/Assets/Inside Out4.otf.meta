@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: d52d0dd130aff4248815e73335d72441
+timeCreated: 1504203601
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Inside Out
+  fontNames:
+  - Inside Out
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
