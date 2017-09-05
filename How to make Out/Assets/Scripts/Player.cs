@@ -5,6 +5,8 @@ using System;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+public delegate void DeadEventHandler();
+
 [RequireComponent(typeof(Controller2D))]
 public class Player : Character
 {
@@ -20,6 +22,8 @@ public class Player : Character
             return instance;
         }
     }
+
+    public event DeadEventHandler Dead;
 
     [HideInInspector]
     public bool trig = false;
@@ -52,8 +56,6 @@ public class Player : Character
 
     Controller2D controller;
     private Animator myAnimator;
-    [SerializeField]
-    private GameObject fireballPrefab;
 
     Vector2 directionalInput;
     bool wallSliding;
@@ -63,13 +65,20 @@ public class Player : Character
     private bool canRegen;
     private float regenTimer;
 
+    private bool immortal = false;
+    [SerializeField]
+    private float immortalTime;
+
+    private SpriteRenderer spriteRenderer;
+
     public override void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         myAnimator = GetComponent<Animator>();
+        controller = GetComponent<Controller2D>();
         base.Start();
         healthStat.Initialize();
         staminaStat.Initialize();
-        controller = GetComponent<Controller2D>();
 
         gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
@@ -79,10 +88,13 @@ public class Player : Character
 
     void Update()
     {
-        HandleInput();
-        CalculateVelocity();
-        controller.Move(velocity * Time.deltaTime, directionalInput);
-        regenTimer += Time.deltaTime;
+        if (!TakingDamage && !IsDead)
+        {
+            HandleInput();
+            CalculateVelocity();
+            controller.Move(velocity * Time.deltaTime, directionalInput);
+            regenTimer += Time.deltaTime;
+        }
 
         if (regenTimer >= 1.5f && staminaStat.CurrentVal != staminaStat.MaxVal)
         {
@@ -118,20 +130,51 @@ public class Player : Character
         }
     }
 
+    void FixedUpdate()
+    {
+        float horizontal = Input.GetAxis("Horizontal");
+
+        HandleMovement(horizontal);
+
+        Flip(horizontal);
+    }
+
+    public void OnDead()
+    {
+        if(Dead != null)
+        {
+            Dead();
+        }
+    }
+
+    void HandleMovement(float horizontal)
+    {
+        Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        SetDirectionalInput(directionalInput);
+    }
+
     private void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
+            FireBall();
+        }
+    }
+
+    private void FireBall()
+    {
+        if (CooldownManager.Instance.FireballIsAllowed)
+        {
+            CooldownManager.Instance.Fireball();
             myAnimator.SetTrigger("fireball");
-            Fireball();
         }
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+    }
+
+    void Flip(float horizontal)
+    {
+        if ((horizontal > 0 && !facingRight) || (horizontal < 0 && facingRight))
         {
-            facingRight = false;
-        }
-        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            facingRight = true;
+            ChangeDirectionPlayer();
         }
     }
 
@@ -268,30 +311,48 @@ public class Player : Character
         velocity.y += gravity * Time.deltaTime;
     }
 
+    private IEnumerator IndicateImmortal()
+    {
+        while (immortal)
+        {
+            spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(0.1f);
+            spriteRenderer.enabled = true;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
     public override IEnumerator TakeDamage()
     {
-        yield return null;
+        if (!immortal)
+        {
+            health -= 1;
+
+            if (!IsDead)
+            {
+                MyAnimator.SetTrigger("damage");
+                immortal = true;
+                StartCoroutine(IndicateImmortal());
+                yield return new WaitForSeconds(immortalTime);
+                immortal = false;
+            }
+            else
+            {
+                MyAnimator.SetTrigger("death");
+            }
+        }
     }
 
     public override bool IsDead
     {
         get
         {
-            return health <= 0;
-        }
-    }
+            if(health <= 0)
+            {
+                OnDead();
+            }
 
-    public void Fireball()
-    {
-        if (facingRight)
-        {
-            GameObject tmp = (GameObject)Instantiate(fireballPrefab, transform.position, Quaternion.identity);
-            tmp.GetComponent<Fireball>().Initialize(Vector2.right);
-        }
-        else
-        {
-            GameObject tmp = (GameObject)Instantiate(fireballPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, -180)));
-            tmp.GetComponent<Fireball>().Initialize(Vector2.left);
+            return health <= 0;
         }
     }
 }

@@ -30,7 +30,7 @@ public class PatrolState : IEnemyState {
     {
         if(other.tag == "Edge")
         {
-            enemy.ChangeDirection();
+            enemy.ChangeDirectionTryangle();
         }
     }
 

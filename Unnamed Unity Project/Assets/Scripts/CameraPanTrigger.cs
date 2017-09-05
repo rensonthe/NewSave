@@ -8,9 +8,12 @@ public class CameraPanTrigger : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        UIManager.Instance.isAllowed = false;
-        cameraFollow.CameraPanTrigger();
-        Destroy(gameObject);
-        gameObjectSetActive.SetActive(true);
+        if(other.tag == "Player")
+        {
+            UIManager.Instance.isAllowed = false;
+            cameraFollow.CameraPanTrigger();
+            Destroy(gameObject);
+            gameObjectSetActive.SetActive(true);
+        }
     }
 }

@@ -146,6 +146,7 @@ public class PlayerController : Character
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (Wraith)
         {
+            facingRight = false;
             healthStat.Initialize();
             mentalityStat.Initialize();
             soulsStat.Initialize();
@@ -162,7 +163,7 @@ public class PlayerController : Character
     // Update is called once per frame
     void Update()
     {
-        
+        Debug.Log(facingRight);
         if (!IsDead)
         {
             HandleInput();
@@ -349,13 +350,12 @@ public class PlayerController : Character
         }
         else if (Wraith)
         {
-            if ((horizontal > 0 && !facingRight && !Attack))
+            mousePosition = Input.mousePosition;
+            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            horizontal = mousePosition.x - transform.position.x;
+            if ((horizontal > 0 && !facingRight && !Attack) || (horizontal < 0 && facingRight && !Attack))
             {
-                ChangeDirectionLeft();
-            }
-            if (horizontal < 0 && facingRight && !Attack)
-            {
-                ChangeDirectionRight();
+                ChangeDirection();
             }
         }
     }

@@ -19,7 +19,7 @@ Platform assembly: C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-
 Loading C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\UnityEngine.Timeline.dll into Unity Child Domain
 Platform assembly: C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\System.dll (this message is harmless)
 Platform assembly: C:\Users\PC3\Documents\GitHub\NewSave\how-to-make-a-wheel-of-fortune-in-unity-the-easiest-way-master\wheel_Data\Managed\System.Core.dll (this message is harmless)
-- Completed reload, in  0.024 seconds
+- Completed reload, in  0.044 seconds
 OnLevelWasLoaded was found on MusicManager
 This message has been deprecated and will be removed in a later version of Unity.
 Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
@@ -28,3 +28,5 @@ Add a delegate to SceneManager.sceneLoaded instead to get notifications after sc
 
 <RI> Initializing input.
 <RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 17.240157 ms

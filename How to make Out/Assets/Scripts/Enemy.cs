@@ -16,7 +16,13 @@ public class Enemy : Character {
 	
 	// Update is called once per frame
 	void Update () {
-        currentState.Execute();
+        if (!IsDead && !IsDead)
+        {
+            if (!TakingDamage)
+            {
+                currentState.Execute();
+            }
+        }
 	}
 
     public void ChangeState(IEnemyState newState)
@@ -49,14 +55,15 @@ public class Enemy : Character {
 
     public override IEnumerator TakeDamage()
     {
-        health -= 10;
+        health -= 1;
+
         if (!IsDead)
         {
             MyAnimator.SetTrigger("damage");
         }
         else
         {
-            MyAnimator.SetTrigger("die");
+            MyAnimator.SetTrigger("death");
             yield return null;
         }
     }
@@ -65,7 +72,8 @@ public class Enemy : Character {
     {
         get
         {
-            return health <= 0;
+            return health <= 0;         
+
         }
     }
 }
