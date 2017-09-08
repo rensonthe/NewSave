@@ -576,7 +576,6 @@ public class PlayerController : Character
     public override void Death()
     {
         StartCoroutine("Checkpoint");
-        player.velocity = Vector2.zero;
 
         if (!isCreated)
         {
@@ -591,7 +590,8 @@ public class PlayerController : Character
         //    if (totalTime >= .09)
         //    {
         //        alphaLevel -= .025f;
-        //        totalTime = 0;
+        //        totalTime = 0;ins
+
         //    }
 
         //    GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, alphaLevel);
@@ -600,6 +600,7 @@ public class PlayerController : Character
 
     private IEnumerator NewLevel()
     {
+        player.velocity = Vector2.zero;
         MyAnimator.SetTrigger("idle");
         healthStat.CurrentVal = healthStat.MaxVal;
         transform.position = startPos;

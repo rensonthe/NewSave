@@ -14,8 +14,7 @@ public abstract class Character : MonoBehaviour {
 
     public Transform[] speechBubble;
     
-    [SerializeField]
-    protected int health;
+    public int health;
 
     public abstract bool IsDead { get; }
 
@@ -25,8 +24,7 @@ public abstract class Character : MonoBehaviour {
 
     public Animator MyAnimator { get; private set; }
 
-    [SerializeField]
-    private List<string> damageSources;
+    public List<string> damageSources;
 
     protected bool facingRight;
 
@@ -38,24 +36,21 @@ public abstract class Character : MonoBehaviour {
         MyAnimator = GetComponent<Animator>();
     }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
     public void ChangeDirectionPlayer()
     {
         if (isSpeech)
         {
-            for (int i = 0; i < speechBubble.Length; i++)
-            {
-                Vector3 speechBubblePos = speechBubble[1].position;
-                speechBubble[1].SetParent(null);
-                facingRight = !facingRight;
-                transform.localScale = new Vector3(transform.localScale.x * -1, 0.4f, 0.4f);
-                speechBubble[1].SetParent(transform);
-                speechBubble[1].position = speechBubblePos;
-            }
+
+            Vector3 speechBubblePos0 = speechBubble[0].position;
+            speechBubble[0].SetParent(null);
+            Vector3 speechBubblePos1 = speechBubble[1].position;
+            speechBubble[1].SetParent(null);
+            facingRight = !facingRight;
+            transform.localScale = new Vector3(transform.localScale.x * -1, 0.4f, 0.4f);
+            speechBubble[0].SetParent(transform);
+            speechBubble[0].position = speechBubblePos0;
+            speechBubble[1].SetParent(transform);
+            speechBubble[1].position = speechBubblePos1;
         }
     }
 
@@ -80,6 +75,8 @@ public abstract class Character : MonoBehaviour {
     }
 
     public abstract IEnumerator TakeDamage();
+
+    public abstract void Death();
 
     public virtual void OnTriggerEnter2D(Collider2D other)
     {

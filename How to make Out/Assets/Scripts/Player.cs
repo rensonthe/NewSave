@@ -33,6 +33,9 @@ public class Player : Character
     [SerializeField]
     private Stat staminaStat;
 
+    public ParticleSystem deathEffect;
+    public Image fadeImage;
+
     public float maxJumpHeight = 4;
     public float minJumpHeight = 1;
     public float timeToJumpApex = .4f;
@@ -69,10 +72,18 @@ public class Player : Character
     [SerializeField]
     private float immortalTime;
 
+    [HideInInspector]
+    public Vector2 startPos;
+
     private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rb;
+    private BoxCollider2D boxCollider2D;
 
     public override void Start()
     {
+        boxCollider2D = GetComponent<BoxCollider2D>();
+        rb = GetComponent<Rigidbody2D>();
+        startPos = transform.position;
         spriteRenderer = GetComponent<SpriteRenderer>();
         myAnimator = GetComponent<Animator>();
         controller = GetComponent<Controller2D>();
@@ -90,6 +101,10 @@ public class Player : Character
     {
         if (!TakingDamage && !IsDead)
         {
+            if(transform.position.y <= -14f)
+            {
+                Death();
+            }
             HandleInput();
             CalculateVelocity();
             controller.Move(velocity * Time.deltaTime, directionalInput);
@@ -128,15 +143,25 @@ public class Player : Character
                 }
             }
         }
+
+        if (!isInTransition)
+            return;
+
+
+        transition += isShowing ? Time.deltaTime * (1 / duration) : -Time.deltaTime * (1 / duration);
+        spriteRenderer.color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, transition);
+        fadeImage.color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, transition);
+
+        if (transition > 1 || transition < 0)
+            isInTransition = false;
+
     }
 
     void FixedUpdate()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-
-        HandleMovement(horizontal);
-
-        Flip(horizontal);
+            float horizontal = Input.GetAxis("Horizontal");
+            HandleMovement(horizontal);
+            Flip(horizontal);
     }
 
     public void OnDead()
@@ -155,7 +180,7 @@ public class Player : Character
 
     private void HandleInput()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetMouseButtonDown(1))
         {
             FireBall();
         }
@@ -326,7 +351,7 @@ public class Player : Character
     {
         if (!immortal)
         {
-            health -= 1;
+            healthStat.CurrentVal -= 1;
 
             if (!IsDead)
             {
@@ -338,21 +363,72 @@ public class Player : Character
             }
             else
             {
+                StartCoroutine("FadeCheckOut");
+                boxCollider2D.enabled = false;
+                Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity) as GameObject, deathEffect.startLifetime);
                 MyAnimator.SetTrigger("death");
+                yield return null;
             }
         }
+    }
+
+    private bool isInTransition;
+    private float transition;
+    private bool isShowing;
+    private float duration;
+
+    public void Fade(bool showing, float duration)
+    {
+        isShowing = showing;
+        isInTransition = true;
+        this.duration = duration;
+        transition = (isShowing) ? 0 : 1;
+    }
+
+    public IEnumerator FadeCheckIn()
+    {
+        Fade(true, 1f);
+        fadeImage.gameObject.SetActive(false);
+        StopCoroutine("FadeCheckIn");
+        yield return null;
+    }
+
+    public IEnumerator FadeCheckOut()
+    {
+        fadeImage.gameObject.SetActive(true);
+        Fade(false, 1f);
+        StopCoroutine("FadeCheckOut");
+        yield return null;
+    }
+
+    public virtual void OnTriggerStay2D(Collider2D other)
+    {
+        if (damageSources.Contains(other.tag))
+        {
+            StartCoroutine(TakeDamage());
+        }
+    }
+
+    public override void Death()
+    {
+        StartCoroutine("FadeCheckIn");
+        rb.velocity = Vector2.zero;
+        boxCollider2D.enabled = true;
+        MyAnimator.SetTrigger("idle");
+        healthStat.CurrentVal = healthStat.MaxVal;
+        transform.position = startPos;
     }
 
     public override bool IsDead
     {
         get
         {
-            if(health <= 0)
+            if(healthStat.CurrentVal <= 0)
             {
                 OnDead();
             }
 
-            return health <= 0;
+            return healthStat.CurrentVal <= 0;
         }
     }
 }

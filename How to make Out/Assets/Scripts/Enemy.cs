@@ -5,11 +5,18 @@ using UnityEngine;
 
 public class Enemy : Character {
 
+    private SpriteRenderer fadeImage;
     private IEnemyState currentState;
+
+    [SerializeField]
+    private Transform leftEdge;
+    [SerializeField]
+    private Transform rightEdge;
 
 	// Use this for initialization
 	public override void Start () {
-        base.Start();   
+        base.Start();
+        fadeImage = GetComponent<SpriteRenderer>();
 
         ChangeState(new IdleState());     		
 	}
@@ -23,7 +30,17 @@ public class Enemy : Character {
                 currentState.Execute();
             }
         }
-	}
+
+        if (!isInTransition)
+            return;
+
+
+        transition += isShowing ? Time.deltaTime * (1 / duration) : -Time.deltaTime * (1 / duration);
+        fadeImage.color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, transition);
+
+        if (transition > 1 || transition < 0)
+            isInTransition = false;
+    }
 
     public void ChangeState(IEnemyState newState)
     {
@@ -39,7 +56,14 @@ public class Enemy : Character {
 
     public void Move()
     {
-        transform.Translate(GetDirection() * (moveSpeed * Time.deltaTime));
+        if ((GetDirection().x > 0 && transform.position.x < rightEdge.position.x) || (GetDirection().x < 0 && transform.position.x > leftEdge.position.x))
+        {
+            transform.Translate(GetDirection() * (moveSpeed * Time.deltaTime));
+        }
+        else if(currentState is PatrolState)
+        {
+            ChangeDirectionTryangle();
+        }
     }
 
     public Vector2 GetDirection()
@@ -63,9 +87,36 @@ public class Enemy : Character {
         }
         else
         {
+            Destroy(gameObject.GetComponent<Collider2D>());
+            StartCoroutine("FadeCheckOut");
             MyAnimator.SetTrigger("death");
             yield return null;
         }
+    }
+
+    public IEnumerator FadeCheckOut()
+    {
+        Fade(false, 1f);
+        StopCoroutine("FadeCheckOut");
+        yield return null;
+    }
+
+    private bool isInTransition;
+    private float transition;
+    private bool isShowing;
+    private float duration;
+
+    public void Fade(bool showing, float duration)
+    {
+        isShowing = showing;
+        isInTransition = true;
+        this.duration = duration;
+        transition = (isShowing) ? 0 : 1;
+    }
+
+    public override void Death()
+    {
+        Destroy(gameObject);
     }
 
     public override bool IsDead

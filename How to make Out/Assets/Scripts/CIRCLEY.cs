@@ -55,6 +55,7 @@ public class CIRCLEY : MonoBehaviour {
 
     IEnumerator CIRCLEYSave()
     {
+        Player.Instance.startPos = transform.position;
         Player.Instance.moveSpeed = 0;
         Player.Instance.trig = true;
         cameraShake.enabled = true;

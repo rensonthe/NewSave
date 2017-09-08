@@ -11,6 +11,7 @@ public class PatrolState : IEnemyState {
 
     public void Enter(Enemy enemy)
     {
+        patrolDuration = Random.Range(3, 7);
         this.enemy = enemy;
     }
 
@@ -28,10 +29,7 @@ public class PatrolState : IEnemyState {
 
     public void OnTriggerEnter(Collider2D other)
     {
-        if(other.tag == "Edge")
-        {
-            enemy.ChangeDirectionTryangle();
-        }
+
     }
 
     private void Patrol()
