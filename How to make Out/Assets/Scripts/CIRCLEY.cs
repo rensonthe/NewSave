@@ -55,6 +55,7 @@ public class CIRCLEY : MonoBehaviour {
 
     IEnumerator CIRCLEYSave()
     {
+        Player.Instance.healthStat.CurrentVal = Player.Instance.healthStat.MaxVal;
         Player.Instance.startPos = transform.position;
         Player.Instance.moveSpeed = 0;
         Player.Instance.trig = true;

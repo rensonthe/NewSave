@@ -28,8 +28,7 @@ public class Player : Character
     [HideInInspector]
     public bool trig = false;
 
-    [SerializeField]
-    private Stat healthStat;
+    public Stat healthStat;
     [SerializeField]
     private Stat staminaStat;
 
@@ -411,6 +410,7 @@ public class Player : Character
 
     public override void Death()
     {
+        OnTrigger.Instance.Died();
         StartCoroutine("FadeCheckIn");
         rb.velocity = Vector2.zero;
         boxCollider2D.enabled = true;
