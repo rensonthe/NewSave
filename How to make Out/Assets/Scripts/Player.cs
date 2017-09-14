@@ -100,10 +100,6 @@ public class Player : Character
     {
         if (!TakingDamage && !IsDead)
         {
-            if(transform.position.y <= -14f)
-            {
-                Death();
-            }
             HandleInput();
             CalculateVelocity();
             controller.Move(velocity * Time.deltaTime, directionalInput);
@@ -405,6 +401,15 @@ public class Player : Character
         if (damageSources.Contains(other.tag))
         {
             StartCoroutine(TakeDamage());
+        }
+    }
+
+    public override void OnTriggerEnter2D(Collider2D other)
+    {
+        base.OnTriggerEnter2D(other);
+        if(other.tag == "Bounds")
+        {
+            Death();
         }
     }
 
