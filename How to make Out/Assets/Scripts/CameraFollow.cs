@@ -47,12 +47,12 @@ public class CameraFollow : MonoBehaviour {
     {
         if(Tutorial.Instance.peekDown == true)
         {
-            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+            if (Input.GetKey(KeyCode.S) && Player.Instance.trig == false|| Input.GetKey(KeyCode.DownArrow) && Player.Instance.trig == false)
             {
                 transform.position += -Vector3.up * 24.5f * Time.deltaTime;
                 Player.Instance.SetInactive();
             }
-            if (Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.DownArrow))
+            if (Input.GetKeyUp(KeyCode.S) && Player.Instance.trig == false || Input.GetKeyUp(KeyCode.DownArrow) && Player.Instance.trig == false)
             {
                 Player.Instance.SetActive();
             }

@@ -10,6 +10,8 @@ public delegate void DeadEventHandler();
 [RequireComponent(typeof(Controller2D))]
 public class Player : Character
 {
+    public bool test;
+
     private static Player instance;
     public static Player Instance
     {
@@ -105,6 +107,17 @@ public class Player : Character
             controller.Move(velocity * Time.deltaTime, directionalInput);
             regenTimer += Time.deltaTime;
         }
+        if (!test)
+        {
+            if (transform.Find("Area_0_Bean"))
+            {
+                FreshBean.Instance.isBean = true;
+            }
+            else
+            {
+                FreshBean.Instance.isBean = false;
+            }
+        }
 
         if (regenTimer >= 1.5f && staminaStat.CurrentVal != staminaStat.MaxVal)
         {
@@ -154,9 +167,12 @@ public class Player : Character
 
     void FixedUpdate()
     {
+        if (!trig)
+        {
             float horizontal = Input.GetAxis("Horizontal");
             HandleMovement(horizontal);
             Flip(horizontal);
+        }
     }
 
     public void OnDead()
@@ -350,6 +366,10 @@ public class Player : Character
 
             if (!IsDead)
             {
+                if (transform.Find("Area_0_Bean"))
+                {
+                    FreshBean.Instance.StartCoroutine("Damaged");
+                }
                 MyAnimator.SetTrigger("damage");
                 immortal = true;
                 StartCoroutine(IndicateImmortal());
@@ -407,9 +427,11 @@ public class Player : Character
     public override void OnTriggerEnter2D(Collider2D other)
     {
         base.OnTriggerEnter2D(other);
-        if(other.tag == "Bounds")
+        if (other.tag == "Bounds")
         {
-            Death();
+            immortal = false;
+            healthStat.CurrentVal -= healthStat.MaxVal;
+            TakeDamage();
         }
     }
 

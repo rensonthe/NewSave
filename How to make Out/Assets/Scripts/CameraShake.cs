@@ -42,7 +42,7 @@ public class CameraShake : MonoBehaviour
     public void Reset()
     {
         shakeDuration = 2f;
-        shakeAmount = 0.7f;
+        shakeAmount = 0.2f;
     }
 
     void OnEnable()
