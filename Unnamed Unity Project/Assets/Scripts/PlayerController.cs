@@ -164,6 +164,7 @@ public class PlayerController : Character
     void Update()
     {
         Debug.Log(facingRight);
+        Debug.Log(Orb);
         if (!IsDead)
         {
             HandleInput();

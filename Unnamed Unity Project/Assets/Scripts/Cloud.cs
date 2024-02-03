@@ -19,7 +19,6 @@ public class Cloud : MonoBehaviour {
 	void Update () {
         Move();	
 	}
-
     void OnBecameInvisible()
     {
         Destroy(gameObject);

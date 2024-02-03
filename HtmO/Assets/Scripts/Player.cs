@@ -460,7 +460,7 @@ public class Player : Character
 
     public override void Death()
     {
-        OnTrigger.Instance.Died();
+        //OnTrigger.Instance.Died();
         StartCoroutine("FadeCheckIn");
         rb.velocity = Vector2.zero;
         boxCollider2D.enabled = true;

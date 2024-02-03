@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using Fungus;
-
 public class CameraFollow : MonoBehaviour {
 
-    public Flowchart flowchart;
     public GameObject player;
     public Transform target;
     public float speed;
@@ -45,14 +42,14 @@ public class CameraFollow : MonoBehaviour {
 
     private void Update()
     {
-        if(Tutorial.Instance.peekDown == true)
+        if (Tutorial.Instance.peekDown == true)
         {
-            if (Input.GetKey(KeyCode.S) && flowchart.GetBooleanVariable("Triggered") == false|| Input.GetKey(KeyCode.DownArrow) && flowchart.GetBooleanVariable("Triggered") == false)
+            if (Input.GetKey(KeyCode.S))
             {
                 transform.position += -Vector3.up * 24.5f * Time.deltaTime;
                 Player.Instance.SetInactive();
             }
-            if (Input.GetKeyUp(KeyCode.S) && flowchart.GetBooleanVariable("Triggered") == false || Input.GetKeyUp(KeyCode.DownArrow) && flowchart.GetBooleanVariable("Triggered") == false)
+            if (Input.GetKeyUp(KeyCode.S))
             {
                 Player.Instance.SetActive();
             }

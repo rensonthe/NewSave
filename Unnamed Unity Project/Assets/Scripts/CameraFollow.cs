@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using Fungus;
-
 public class CameraFollow : MonoBehaviour {
 
-    public Flowchart flowchart;
     public GameObject player;
     public Transform target;
     public float speed;
@@ -135,11 +132,11 @@ public class CameraFollow : MonoBehaviour {
         panning = true;
         PlayerController.Instance.SetInactive();
         yield return new WaitForSeconds(4.25f);
-        if (!displayed)
-        {
-            flowchart.ExecuteBlock("CameraPan1");
-            displayed = true;
-        }
+        //if (!displayed)
+        //{
+        //    flowchart.ExecuteBlock("CameraPan1");
+        //    displayed = true;
+        //}
     }
 
     public IEnumerator WaitForKeyPress()

@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Fungus;
-
 public class EInteraction : MonoBehaviour {
 
     public string Message;
-    public Flowchart flowchart;
     public PlayerController playerController;
     public SpriteRenderer bubble;
     public bool triggered = false;
@@ -27,16 +24,16 @@ public class EInteraction : MonoBehaviour {
         if (transition > 1 || transition < 0)
             isInTransition = false;
 
-        if(Input.GetKeyDown(KeyCode.E) && triggered == true)
-        {
-            if (flowchart.GetBooleanVariable("Triggered") == false)
-            {
-                playerController.moveSpeed = 0;
-                playerController.trig = true;
+        //if(Input.GetKeyDown(KeyCode.E) && triggered == true)
+        //{
+        //    if (flowchart.GetBooleanVariable("Triggered") == false)
+        //    {
+        //        playerController.moveSpeed = 0;
+        //        playerController.trig = true;
 
-                flowchart.SendFungusMessage(Message);
-            }
-        }
+        //        flowchart.SendFungusMessage(Message);
+        //    }
+        //}
     }
 
     public void Fade(bool showing, float duration)
